@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" media="screen" charset="utf-8"/>
+    <script src="#"></script>
+    {% block styles%}
+    {% endblock styles %}
+    <title>Watch2Together</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <a href="{% url 'mainpage' %}">Watch2Together</a>
+        </div>
+        <div class="header-links">
+            <a href="{% url 'films' %}">Фильмы</a>
+        </div>
+        <div class="header-profile">
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'signin' %}">Авторизация</a>
+                <a href="{% url 'signup' %}">Регистрация</a>
+            {% else %}
+                <div class="dropdown" id="drop-down">
+                    <span>Профиль</span>
+                    <label>
+                        <input type="checkbox">
+                        <ul>
+                            <a style="color: black; font-weight: 900; font-size: 20px; display: block; padding: 6px 20px; white-space: nowrap; min-width: 100px;">username</a>
+                            <li val="Personal"><a href="profile.html" style="color: black">Настройки аккаунта</a></li>
+                            <li val="Personal"><a href="friends.html" style="color: black">Друзья</a></li>
+                            <li val="Personal"><a href="notification.html" style="color: black">Уведомления</a></li>
+                            <li val="Personal"><a href="#" style="color: black">Избранное</a></li>
+                            <li val="Personal"><a href="#" style="color: black">Купить подписку</a></li>
+                            <li val="Exit"><a href="{% url 'logout' %}" style="color: red">Выйти</a></li>
+                        </ul>
+                    </label>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+    {% block content %}
+    {% endblock content%}
+    </main>
+
+    <footer>
+        <a>2024 Watch2Twogether. Все права защищены.</a>
+    </footer>
+</body>
+
+</html>

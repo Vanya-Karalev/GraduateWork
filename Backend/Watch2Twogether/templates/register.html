@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container" style="margin: 100px auto;">
+        <div class="login-page">
+            <h1 class="login-page__header">Регистрация</h1>
+            <form method="POST" class="login-form" action="{% url 'signup' %}">
+                {%csrf_token%}
+                <label for="username" class="form__username">Имя пользователя:</label>
+                <input class="form__input-username"
+                       type="text"
+                       placeholder="username"
+                       id="username"
+                       name="username"
+                       required
+                />
+                <label for="email" class="form__username">Почта:</label>
+                <input class="form__input-username"
+                       type="email"
+                       placeholder="email"
+                       id="email"
+                       name="email"
+                       required/>
+                <label for="password" class="form__username">Пароль:</label>
+                <input class="form__input-username"
+                       type="password"
+                       placeholder="password"
+                       id="password"
+                       name="password1"
+                       required/>
+                <label for="repeat_password" class="form__username">Повторить пароль:</label>
+                <input class="form__input-password"
+                       type="password"
+                       placeholder="repeat password"
+                       id="repeat_password"
+                       name="password2"
+                       required/>
+                <button type="submit" class="form__signin">
+                    Регистрация
+                </button>
+            </form>
+            <p class="message">
+                Уже зарегистрированы? <a href="{% url 'signin' %}">Вход</a>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

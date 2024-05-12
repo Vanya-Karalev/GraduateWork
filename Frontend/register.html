@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/signin.css" type="text/css" media="screen" charset="utf-8"/>
+    <script src="#"></script>
+    <title>Watch2Twogether</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <a href="index.html">Watch2Twogether</a>
+        </div>
+        <div class="header-links">
+            <a href="films.html">Фильмы</a>
+        </div>
+        <div class="header-profile">
+            <a href="login.html">Авторизация</a>
+            <a href="register.html">Регистрация</a>
+            <div class="dropdown" id="drop-down">
+                <span>Профиль</span>
+                <label>
+                <input type="checkbox">
+                <ul>
+                    <a style="color: black; font-weight: 900; font-size: 20px; display: block; padding: 6px 20px; white-space: nowrap; min-width: 100px;">username</a>
+                    <li val="Personal"><a href="profile.html" style="color: black">Настройки аккаунта</a></li>
+                    <li val="Personal"><a href="#" style="color: black">Друзья</a></li>
+                    <li val="Personal"><a href="#" style="color: black">Уведомления</a></li>
+                    <li val="Personal"><a href="#" style="color: black">Избранное</a></li>
+                    <li val="Personal"><a href="#" style="color: black">Купить подписку</a></li>
+                    <li val="Exit"><a href="#" style="color: red">Выйти</a></li>
+                </ul>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container" style="margin: 100px auto;">
+            <div class="login-page">
+                <h1 class="login-page__header">Регистрация</h1>
+                <form method="POST" class="login-form" >
+                    <label for="username" class="form__username">Имя пользователя:</label>
+                    <input class="form__input-username"
+                           type="text"
+                           placeholder="username"
+                           id="username"
+                           name="username"
+                           required
+                           value="username"
+                    />
+                    <label for="email" class="form__username">Почта:</label>
+                    <input class="form__input-username"
+                           type="email"
+                           placeholder="email"
+                           id="email"
+                           name="email"
+                           required
+                           value="email"/>
+                    <label for="password" class="form__username">Пароль:</label>
+                    <input class="form__input-username"
+                           type="password"
+                           placeholder="password"
+                           id="password"
+                           name="password1"
+                           required/>
+                    <label for="repeat_password" class="form__username">Повторить пароль:</label>
+                    <input class="form__input-password"
+                           type="password"
+                           placeholder="repeat password"
+                           id="repeat_password"
+                           name="password2"
+                           required/>
+                    <button type="submit" class="form__signin">
+                        Регистрация
+                    </button>
+                </form>
+                <p class="message">
+                    Уже зарегистрированы? <a href="login.html">Вход</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a>2024 Watch2Twogether. Все права защищены.</a>
+    </footer>
+</body>
+
+</html>
