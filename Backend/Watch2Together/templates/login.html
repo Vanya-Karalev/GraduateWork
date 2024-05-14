@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <div class="login-page">
+            <h1 class="login-page__header">Авторизация</h1>
+            <form method="POST" class="login-form" action="{% url 'signin' %}">
+                {%csrf_token%}
+                <label class="form__username">Имя пользователя:</label>
+                <input
+                        class="form__input-username"
+                        type="text"
+                        placeholder="username"
+                        id="username"
+                        name="username" required
+                />
+                <label class="form__password">Пароль:</label>
+                <input
+                        class="form__input-password"
+                        type="password"
+                        placeholder="password"
+                        id="password"
+                        name="password" required
+                />
+                <button type="submit" class="form__signin" id="submitData">
+                    Авторизация
+                </button>
+            </form>
+            <p class="message">
+                Еще не зарегистрированы? <a href="{% url 'signup' %}">Регистрация</a>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

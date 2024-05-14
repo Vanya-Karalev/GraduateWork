@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/aboutfilm.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <div class="wrapper">
+
+            <div class="wrapper-col-1">
+                <img src="{{ film.poster }}" alt="{{ film.title }} ({{ film.date }})">
+            </div>
+
+            <div class="wrapper-col-2">
+                <h1 class="title">{{ film.title }} ({{ film.date|date:"Y" }})</h1>
+                <h6 class="subtitle">{{ film.eng_title }} {{ film.age }}+</h6>
+                <p class="description">{{ film.description }}</p>
+                
+                <div class="mb-40">
+                    <a href="#" class="btn">Смотреть</a>
+                </div>
+
+                <ul class="params mb-40">
+                    <li><span class="text-muted">Аудиодорожки</span> Русский, Русский 5.1, Английский, Английский 5.1</li>
+                    <li><span class="text-muted">Субтитры</span> Русские, Английские</li>
+                    <li><span class="text-muted">Качество видео</span> <span><span class="tag">Full HD</span></span></li>
+                </ul>
+                
+                <h2>О фильме</h2>
+
+                <ul class="params">
+                    <li><span class="text-muted">Год производства</span>{{ film.date }}</li>
+                    <li><span class="text-muted">Страна</span>{{ film.country }}</li>
+                    <li><span class="text-muted">Жанр</span> <span><a href="#">фантастика</a>, <a href="#">боевик</a>, <a href="#">триллер</a>, <a href="#">драма</a></span></li>
+                    <li><span class="text-muted">Слоган</span> <span class="text-muted">«{{ film.slogan }}»</span></li>
+                    <li><span class="text-muted">Режиссер</span> Джеймс Мэнголд</li>
+                    <li><span class="text-muted">Время</span> <time class="text-muted">{{ film.duration }} мин. / 02:17</time></li>
+                </ul>
+            </div>
+
+            <div class="wrapper-col-3">
+                <span class="rathing-main">{{ film.rating }}</span>
+{#                <span class="rathing-counts">296 824 оценки</span>#}
+{#                <a href="#" class="rathing-details">459 рецензий</a>#}
+            </div>
+            
+        </div>
+    </div>
+{% endblock content %}

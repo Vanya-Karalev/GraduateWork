@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/films.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        {% for film in films %}
+            <div class="card">
+                <div class="card-thumbnail">
+                    <img src="{{ film.poster }}" alt="">
+                </div>
+                <div class="card-body">
+                    <span class="card-title">{{ film.title }}</span>
+                    <p>
+                        <span>{{ film.age }}+</span> 
+                        <span>{{ film.duration }}min</span>
+                        {% for genre in film.genres.all %}
+                            <span>{{ genre.name }} </span>
+                        {% endfor %}
+                    </p>
+                    <p class="card-description">{{ film.description }}</p>
+                    <a href="{% url 'film_info' slug=film.slug %}">Read more</a>
+                    <a class="trailer" href="{{ film.trailer }}"> <i class="fas fa-play"></i>Watch Trailer</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
