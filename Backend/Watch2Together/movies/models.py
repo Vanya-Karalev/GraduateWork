@@ -1,5 +1,4 @@
 from django.db import models
-import uuid
 from users.models import CustomUser
 
 
@@ -36,7 +35,7 @@ class Film(models.Model):
 
 
 class Room(models.Model):
-    room_name = models.UUIDField(default=uuid.uuid4, editable=False, db_column='Room name')
+    room_name = models.CharField(db_column='Room name')
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='OwnerID')
 
     def __str__(self):

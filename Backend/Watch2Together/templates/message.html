@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Messages</title>
     <!-- load static -->
     {% load static %}
@@ -18,7 +18,7 @@
             <center><h2>Chats</h2></center><hr>
             <div class="chat-body-parent">
                 <div class="chat-body" id="tasks">
-                    
+
                     <div class="message" id="chatContainer">
                         <!-- Received messages are displayed here -->
                         {% for i in messages %}
@@ -40,7 +40,7 @@
                             {% csrf_token %}
                             <textarea id="msg" cols="30" name="message" rows="10" placeholder="Enter your message" required></textarea>
                             <button class="submit" type="submit">Send</button>
-                        </form>    
+                        </form>
                     </div>
                 </div>
             </div>
@@ -53,11 +53,13 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
+    // Determine the WebSocket protocol based on the application's URL
     const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
     const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
+
+    // Create a new WebSocket connection
     const socket = new WebSocket(wsEndpoint);
     
-    console.log("{{room_name}}");
     // Successful connection event
     socket.onopen = (event) => {
         console.log("WebSocket connection opened!");
@@ -112,10 +114,10 @@
         display: flex;
         justify-content: center;
         /* background-image: url("/static/img/bck.jpg");  */
-       
-        background-position: center; 
-        background-repeat: no-repeat; 
-        background-size: cover; 
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
         align-items: center;
         width: 100%;
     }
@@ -125,7 +127,7 @@
         width: 30%;
         margin: 10px;
         border-radius: 10px;
-        
+
         background-color: white;
     }
 
@@ -143,7 +145,7 @@
     .profile-pic {
         /* height: 80px; */
         width: 15%;
-        
+
         border-radius: 50px;
         background-color: #fff;
     }
@@ -193,7 +195,7 @@
         width: 100%;
         background-color: #557A95;
         border-radius: 10px;
-        display: flex;      
+        display: flex;
         padding: 10px;
         flex-direction: column;
     }
@@ -206,7 +208,7 @@
     .chat-body .message .receive, .send {
         background-color: #B1A296;
         max-width: 400px;
-       
+
         border-radius: 10px;
         padding: 10px;
         margin-bottom: 10px;

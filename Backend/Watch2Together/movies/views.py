@@ -20,15 +20,22 @@ def get_film_info(request, slug):
 
 def CreateRoom(request):
     if request.method == 'POST':
-        new_room = Room(owner=request.user)
-        new_room.save()
-        return redirect('room', room_name=new_room.room_name)
+        try:
+            return redirect('room', room_name='test')
+        except Room.DoesNotExist:
+            new_room = Room(room_name='test', owner=request.user)
+            new_room.save()
+            return redirect('room', room_name=new_room.room_name)
+
     return render(request, 'message.html')
 
 
 def MessageView(request, room_name):
-    room = get_object_or_404(Room, room_name=room_name)
-    messages = Message.objects.filter(room=room_name)
-    context = {'room': room,
-               'messages': messages}
+    get_room = Room.objects.get(room_name=room_name)
+    get_messages = Message.objects.filter(room=get_room)
+
+    context = {
+        "messages": get_messages,
+        "room_name": room_name,
+    }
     return render(request, 'message.html', context)
