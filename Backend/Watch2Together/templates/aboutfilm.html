@@ -20,6 +20,10 @@
                 
                 <div class="mb-40">
                     <a href="#" class="btn">Смотреть</a>
+                    <form action="{% url 'create-room' %}" method="POST">
+                        {% csrf_token %}
+                        <button href="#" class="btn" type="submit">Смотреть вместе</button>
+                    </form>
                 </div>
 
                 <ul class="params mb-40">

@@ -32,15 +32,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'users.apps.UsersConfig',
     'movies.apps.MoviesConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Watch2Together.wsgi.application'
+ASGI_APPLICATION = 'Watch2Together.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

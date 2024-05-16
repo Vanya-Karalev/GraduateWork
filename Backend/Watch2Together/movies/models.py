@@ -1,4 +1,6 @@
 from django.db import models
+import uuid
+from users.models import CustomUser
 
 
 class Genre(models.Model):
@@ -31,3 +33,30 @@ class Film(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Room(models.Model):
+    room_name = models.UUIDField(default=uuid.uuid4, editable=False, db_column='Room name')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='OwnerID')
+
+    def __str__(self):
+        return self.room_name
+
+
+class Message(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='SenderID')
+    message = models.TextField()
+
+    def __str(self):
+        return str(self.room)
+
+
+# class RoomUsers(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='UserID')
+#
+#     class Meta:
+#         db_table = 'RoomUsers'
+#
+#     def __str__(self):
+#         return str(self.pk)
