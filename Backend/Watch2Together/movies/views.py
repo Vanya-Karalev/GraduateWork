@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from movies.models import Film, Room, Message
+import uuid
 
 
 def get_mainpage(request):
@@ -20,12 +21,21 @@ def get_film_info(request, slug):
 
 def CreateRoom(request):
     if request.method == 'POST':
-        try:
-            return redirect('room', room_name='test')
-        except Room.DoesNotExist:
-            new_room = Room(room_name='test', owner=request.user)
-            new_room.save()
-            return redirect('room', room_name=new_room.room_name)
+        # try:
+        #     name = str(uuid.uuid4())
+        #     print(name)
+        #     return redirect('room', room_name=name)
+        # except Room.DoesNotExist:
+        #     name = str(uuid.uuid4())
+        #     print(name)
+        #     new_room = Room(room_name=name, owner=request.user)
+        #     new_room.save()
+        #     return redirect('room', room_name=new_room.room_name)
+
+        name = str(uuid.uuid4())
+        new_room = Room(room_name=name, owner=request.user)
+        new_room.save()
+        return redirect('room', room_name=name)
 
     return render(request, 'message.html')
 
@@ -36,6 +46,7 @@ def MessageView(request, room_name):
 
     context = {
         "messages": get_messages,
+        # "user": request.user,
         "room_name": room_name,
     }
     return render(request, 'message.html', context)
