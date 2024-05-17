@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        <div class="profile-page">
+            <h1 class="profile-page__header">Profile</h1>
+            <div class="profile-page__details">
+                <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="profile-page__img">
+                        <img src="{{ request.user.image.url }}" alt="image">
+                        <button class="form__upload" id="upload-avatar-btn" type="button">
+                            Выбрать
+                            <input type="file" id="upload-avatar-inp" name="image" accept="image/png, image/jpeg"/>
+                        </button>
+                    </div>
+                    <div class="profile-page__info">
+                        <label class="form__username">Почта</label>
+                        <input class="form__input-username" value="{{ request.user.email }}" name="email"/>
+                        <label class="form__current-password">Текущий пароль</label>
+                        <input class="form__input-current-password"/>
+                        <label class="form__new-password">Новый пароль</label>
+                        <input class="form__input-new-password"/>
+                        <button type="submit" class="form__save">
+                            Сохранить
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="profile-page__subcription">
+                <h3>Бесплатный</h3>
+                <a>Купить подписку</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

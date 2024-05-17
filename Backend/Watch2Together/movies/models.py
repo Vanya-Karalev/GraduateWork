@@ -37,6 +37,8 @@ class Film(models.Model):
 class Room(models.Model):
     room_name = models.CharField(db_column='Room name')
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='OwnerID')
+    # film
+    # timer
 
     def __str__(self):
         return self.room_name

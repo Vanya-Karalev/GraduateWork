@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/friends.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="main">
+  <div class="content">
+    <div class="header">
+      <h2>Friends</h2>
+    </div>
+    <div class="body">
+        <div class="item-container">
+            <div class="img">
+              <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="">
+            </div>
+            <div class="text-content">
+              <h3>Fresh Milk</h3>
+              <p>@username</p>
+            </div>
+            <div style="align-self: center;">
+              <button>Отправить заявку</button>
+              <p style="color: #aaa; font-size: .95em; margin-top: 3px;">не друзья</p>
+            </div>
+        </div>
+        
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Ripe Tomato</h3>
+          <p>This time it should be ripe!</p>
+        </div>
+      </div>
+        
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Vegetables</h3>
+          <p>Not that much, just some.</p>
+        </div>
+      </div>
+        
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Pineapple</h3>
+          <p>Oh yeah baby! I need this ASAP</p>
+        </div>
+      </div>
+        
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock js %}

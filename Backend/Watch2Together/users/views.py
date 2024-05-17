@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
-from users.forms import CustomUserCreationForm
+from users.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 class SignUpView(CreateView):
@@ -14,6 +14,19 @@ class SignUpView(CreateView):
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
+
+
+class ProfileView(UpdateView):
+    form_class = CustomUserChangeForm
+    success_url = reverse_lazy('mainpage')
+    template_name = 'profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = form.save()
+        return super().form_valid(form)
 
 
 def LoginPage(request):
@@ -33,3 +46,15 @@ def LoginPage(request):
 def LogoutPage(request):
     logout(request)
     return redirect('mainpage')
+
+
+def friends(request):
+    return render(request, 'friends.html')
+
+
+def notifications(request):
+    return render(request, 'notification.html')
+
+
+def subscription(request):
+    return render(request, 'subscription.html')

@@ -37,7 +37,7 @@ def CreateRoom(request):
         new_room.save()
         return redirect('room', room_name=name)
 
-    return render(request, 'message.html')
+    return render(request, 'room.html')
 
 
 def MessageView(request, room_name):
@@ -46,7 +46,6 @@ def MessageView(request, room_name):
 
     context = {
         "messages": get_messages,
-        # "user": request.user,
         "room_name": room_name,
     }
-    return render(request, 'message.html', context)
+    return render(request, 'room.html', context)
