@@ -8,80 +8,85 @@
 
 {% block content %}
     <div style="display: flex">
-    <div id="container">
-      <video id='video' controls="controls" preload='none' width="1100px" poster="https://assets.codepen.io/32795/poster.png">
-        <source id='mp4' src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' />
-        <source id='webm' src="http://media.w3.org/2010/05/sintel/trailer.webm" type='video/webm' />
-        <source id='ogv' src="http://media.w3.org/2010/05/sintel/trailer.ogv" type='video/ogg' />
-      </video>
-    </div>
+        <div id="container">
+            <video id='video' controls="controls" preload='none' width="1100px" poster="https://assets.codepen.io/32795/poster.png">
+                <source id='mp4' src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' />
+            </video>
+{#            {% if request.user == room.owner %}#}
+{#                <video id='video' controls="controls" preload='none' width="1100px" poster="https://assets.codepen.io/32795/poster.png">#}
+{#                    <source id='mp4' src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' />#}
+{#                </video>#}
+{#            {% else %}#}
+{#                <video id='video' preload='none' width="1100px" poster="https://assets.codepen.io/32795/poster.png">#}
+{#                    <source id='mp4' src="http://media.w3.org/2010/05/sintel/trailer.mp4" type='video/mp4' />#}
+{#                </video>#}
+{#            {% endif %}#}
+        </div>
     
-    <div class="parent">
-        <div class="child-2">
-            <center><h2>Chat</h2></center>
-            <div class="chat-body-parent">
-                <div class="chat-body" id="tasks">
+        <div class="parent">
+            <div class="child-2">
+                <center><h2>Chat</h2></center>
+                <div class="chat-body-parent">
+                    <div class="chat-body" id="tasks">
     
-                    <div class="message" id="chatContainer">
-                        <!-- Received messages are displayed here -->
-                        {% for i in messages %}
-                            {% if i.sender != user %}
-                                <div class="receive">
-                                    <p style="color: #000;"> {{i.message}}<strong>-{{i.sender}}</strong></p>
-                                </div>
-                            {% else %}
-                                <div class="send">
-                                    <p style="color: #000;">{{i.message}}</p>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <!-- End of received messages -->
-                    </div>
+                        <div class="message" id="chatContainer">
+                            <!-- Received messages are displayed here -->
+                            {% for i in messages %}
+                                {% if i.sender != user %}
+                                    <div class="receive">
+                                        <p style="color: #000;"> {{i.message}}<strong>-{{i.sender}}</strong></p>
+                                    </div>
+                                {% else %}
+                                    <div class="send">
+                                        <p style="color: #000;">{{i.message}}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- End of received messages -->
+                        </div>
     
-                    <div class="form">
-                        <form action="" id="message-form" method="POST">
-                            {% csrf_token %}
-                            <textarea id="msg" cols="30" name="message" rows="10" style="resize: none" placeholder="Enter your message" required></textarea>
-                            <button class="submit" type="submit">Send</button>
-                        </form>
+                        <div class="form">
+                            <form action="" id="message-form" method="POST">
+                                {% csrf_token %}
+                                <textarea id="msg" cols="30" name="message" rows="10" style="resize: none" placeholder="Enter your message" required></textarea>
+                                <button class="submit" type="submit">Send</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
 {% endblock content %}
 
 {% block js %}
 <script>
+    let userAction = false;
+
     function scrollToBottom() {
         var chatContainer = document.getElementById("chatContainer");
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // Determine the WebSocket protocol based on the application's URL
     const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
     const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
 
-    // Create a new WebSocket connection
     const socket = new WebSocket(wsEndpoint);
     
-    // Successful connection event
     socket.onopen = (event) => {
         console.log("WebSocket connection opened!");
     };
 
-    // Socket disconnect event
     socket.onclose = (event) => {
         console.log("WebSocket connection closed!");
     };
 
-    // Form submit listener
     document.getElementById('message-form').addEventListener('submit', function(event){
         event.preventDefault();
         const message = document.getElementById('msg').value;
         socket.send(
             JSON.stringify({
+                'type': 'chat_message',
                 'message': message,
                 'room_name': '{{room_name}}',
                 'sender': '{{user}}',
@@ -89,28 +94,73 @@
         );
     });
     
-    // Response from consumer on the server
     socket.addEventListener("message", (event) => {
-        const messageData = JSON.parse(event.data)['message'];
-        console.log(messageData);
+        const data = JSON.parse(event.data);
+        if (data.type === 'chat_message') {
+            const messageData = data.message;
+            var sender = messageData['sender'];
+            var message = messageData['message'];
 
-        var sender = messageData['sender'];
-        var message = messageData['message'];
+            if (sender == '{{user}}'){
+                document.getElementById('msg').value = '';
+            }
 
-        // Empty the message input field after the message has been sent
-        if (sender == '{{user}}'){
-            document.getElementById('msg').value = '';
+            var messageDiv = document.querySelector('.message');
+            if (sender != '{{user}}') {
+                messageDiv.innerHTML += '<div class="receive"><p style="color: #000;">' + message + '<strong>-' + sender + '</strong></p></div>';
+            } else {
+                messageDiv.innerHTML += '<div class="send"><p style="color: #000;">' + message + '</p></div>';
+            }
+            scrollToBottom();
+        } else if (data.type === 'video_event') {
+            const videoEvent = data.event;
+            if (!userAction) {
+                if (videoEvent.action === 'pause') {
+                    video.pause();
+                } else if (videoEvent.action === 'play') {
+                    video.play();
+                } else if (videoEvent.action === 'seek') {
+                    video.currentTime = videoEvent.time;
+                }
+            }
         }
-
-        // Append the message to the chatbox
-        var messageDiv = document.querySelector('.message');
-        if (sender != '{{user}}') { // Assuming you have a variable `currentUser` to hold the current user's name
-            messageDiv.innerHTML += '<div class="receive"><p style="color: #000;">' + message + '<strong>-' + sender + '</strong></p></div>';
-        } else {
-            messageDiv.innerHTML += '<div class="send"><p style="color: #000;">' + message + '</p></div>';
-        }
-        scrollToBottom();
     });
     
+{#    {% if request.user == room.owner %}#}
+        const video = document.getElementById('video');
+    
+        video.addEventListener('pause', handleVideoEvent);
+        video.addEventListener('play', handleVideoEvent);
+        video.addEventListener('seeked', handleVideoEvent);
+    
+        function handleVideoEvent(event) {
+            const currentTime = video.currentTime.toFixed(2);
+            let action = event.type;
+            if (action === 'seeked') {
+                action = 'seek';
+            }
+            userAction = true;
+            socket.send(
+                JSON.stringify({
+                    'type': 'video_event',
+                    'action': action,
+                    'time': currentTime,
+                    'room_name': '{{room_name}}'
+                })
+            );
+        }
+    
+        video.addEventListener('timeupdate', function() {
+            userAction = false;
+        });
+    
+        video.addEventListener('play', function() {
+            userAction = false;
+        });
+    
+        video.addEventListener('pause', function() {
+            userAction = false;
+        });
+{#    {% endif %}#}
 </script>
 {% endblock js %}

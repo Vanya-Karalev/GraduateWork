@@ -18,14 +18,16 @@
                 <h6 class="subtitle">{{ film.eng_title }} {{ film.age }}+</h6>
                 <p class="description">{{ film.description }}</p>
                 
-                <div class="mb-40">
-                    <a href="#" class="btn">Смотреть</a>
-                    <form action="{% url 'create-room' %}" method="POST">
-                        {% csrf_token %}
-                        <button href="#" class="btn" type="submit">Смотреть вместе</button>
-                    </form>
-                </div>
-
+                {% if request.user.is_authenticated %}
+                    <div class="mb-40">
+                        <a href="#" class="btn">Смотреть</a>
+                        <form action="{% url 'create-room' film.id %}" method="POST">
+                            {% csrf_token %}
+                            <button href="#" class="btn" type="submit">Смотреть вместе</button>
+                        </form>
+                    </div>
+                {% endif %}
+            
                 <ul class="params mb-40">
                     <li><span class="text-muted">Аудиодорожки</span> Русский, Русский 5.1, Английский, Английский 5.1</li>
                     <li><span class="text-muted">Субтитры</span> Русские, Английские</li>

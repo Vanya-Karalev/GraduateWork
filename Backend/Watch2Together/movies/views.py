@@ -19,21 +19,12 @@ def get_film_info(request, slug):
     return render(request, 'aboutfilm.html', context)
 
 
-def CreateRoom(request):
-    if request.method == 'POST':
-        # try:
-        #     name = str(uuid.uuid4())
-        #     print(name)
-        #     return redirect('room', room_name=name)
-        # except Room.DoesNotExist:
-        #     name = str(uuid.uuid4())
-        #     print(name)
-        #     new_room = Room(room_name=name, owner=request.user)
-        #     new_room.save()
-        #     return redirect('room', room_name=new_room.room_name)
+def CreateRoom(request, film_id):
+    film = Film.objects.get(pk=film_id)
 
+    if request.method == 'POST':
         name = str(uuid.uuid4())
-        new_room = Room(room_name=name, owner=request.user)
+        new_room = Room(room_name=name, owner=request.user, film=film)
         new_room.save()
         return redirect('room', room_name=name)
 

@@ -22,23 +22,60 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json
+        message_type = text_data_json.get('type')
 
+        if message_type == 'chat_message':
+            await self.handle_chat_message(text_data_json)
+        elif message_type == 'video_event':
+            await self.handle_video_event(text_data_json)
+
+    async def handle_chat_message(self, data):
         event = {
-            'type': 'send_message',
-            'message': message,
+            'type': 'send_chat_message',
+            'message': data,
         }
-
         await self.channel_layer.group_send(self.room_name, event)
 
-    async def send_message(self, event):
+    async def handle_video_event(self, data):
+        event = {
+            'type': 'send_video_event',
+            'event': data,
+        }
+        await self.channel_layer.group_send(self.room_name, event)
+
+        if not data.get('user_action', False):
+            # Если событие вызвано программно (не пользователем),
+            # выполните необходимые действия, например, сохранение времени видео в базе данных
+            await self.save_video_time(data)
+
+    @database_sync_to_async
+    def save_video_time(self, data):
+        room = Room.objects.get(room_name=data['room_name'])
+        room.timer = data['time']
+        room.save()
+
+    async def send_chat_message(self, event):
         data = event['message']
         await self.create_message(data=data)
         response_data = {
-            'sender': data['sender'],
-            'message': data['message']
+            'type': 'chat_message',
+            'message': {
+                'sender': data['sender'],
+                'message': data['message']
+            }
         }
-        await self.send(text_data=json.dumps({'message': response_data}))
+        await self.send(text_data=json.dumps(response_data))
+
+    async def send_video_event(self, event):
+        data = event['event']
+        response_data = {
+            'type': 'video_event',
+            'event': {
+                'action': data['action'],
+                'time': data['time'],
+            }
+        }
+        await self.send(text_data=json.dumps(response_data))
 
     @database_sync_to_async
     def create_message(self, data):

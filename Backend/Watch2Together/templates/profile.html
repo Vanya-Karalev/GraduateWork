@@ -13,7 +13,11 @@
                 <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="profile-page__img">
-                        <img src="{{ request.user.image.url }}" alt="image">
+                        {% if request.user.image and request.user.image.url %}
+                            <img src="{{ request.user.image.url }}" alt="image">
+                        {% else %}
+                            <img src="/media/images/Manjiro_Mikey_Sano.jpeg" alt="image">
+                        {% endif %}
                         <button class="form__upload" id="upload-avatar-btn" type="button">
                             Выбрать
                             <input type="file" id="upload-avatar-inp" name="image" accept="image/png, image/jpeg"/>

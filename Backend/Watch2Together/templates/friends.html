@@ -41,7 +41,7 @@
                     </div>
                     <div class="text-content">
                       <h3>Fresh Milk</h3>
-                      <p>{{ for_me_request.username }}</p>
+                      <p>{{ for_me_request.sender.username }}</p>
                     </div>
                     <div style="align-self: center;">
                         <button type="submit">Принять заявку</button>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="text-content">
                       <h3>Fresh Milk</h3>
-                      <p>{{ my_request.username }}</p>
+                      <p>{{ my_request.receiver.username }}</p>
                     </div>
                     <div style="align-self: center;">
                         <button type="submit">Отменить заявку</button>
@@ -89,43 +89,37 @@
              </form>
         {% endfor %}
     
-{#      <div class="item-container">#}
-{#        <div class="img">#}
-{#          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">#}
-{#        </div>#}
-{#        <div class="text-content">#}
-{#          <h3>Ripe Tomato</h3>#}
-{#          <p>This time it should be ripe!</p>#}
-{#        </div>#}
-{#      </div>#}
-{#        #}
-{#      <div class="item-container">#}
-{#        <div class="img">#}
-{#          <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">#}
-{#        </div>#}
-{#        <div class="text-content">#}
-{#          <h3>Vegetables</h3>#}
-{#          <p>Not that much, just some.</p>#}
-{#        </div>#}
-{#      </div>#}
-{#        #}
-{#      <div class="item-container">#}
-{#        <div class="img">#}
-{#          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">#}
-{#        </div>#}
-{#        <div class="text-content">#}
-{#          <h3>Pineapple</h3>#}
-{#          <p>Oh yeah baby! I need this ASAP</p>#}
-{#        </div>#}
-{#      </div>#}
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Ripe Tomato</h3>
+          <p>This time it should be ripe!</p>
+        </div>
+      </div>
+
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Vegetables</h3>
+          <p>Not that much, just some.</p>
+        </div>
+      </div>
+
+      <div class="item-container">
+        <div class="img">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+        </div>
+        <div class="text-content">
+          <h3>Pineapple</h3>
+          <p>Oh yeah baby! I need this ASAP</p>
+        </div>
+      </div>
         
     </div>
   </div>
 </div>
 {% endblock content %}
-
-{% block js %}
-<script>
-
-</script>
-{% endblock js %}
