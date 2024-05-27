@@ -38,5 +38,14 @@ def MessageView(request, room_name):
     context = {
         "messages": get_messages,
         "room_name": room_name,
+        "room": get_room,
+        "current_time": get_room.timer,
+        "is_paused": get_room.pause
     }
     return render(request, 'room.html', context)
+
+
+def watch_film(request, slug):
+    film = get_object_or_404(Film, slug=slug)
+    context = {'film': film}
+    return render(request, 'watch.html', context)

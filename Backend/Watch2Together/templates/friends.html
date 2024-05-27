@@ -31,7 +31,7 @@
                 </div>
              </form>
         {% endfor %}
-    
+
         {% for for_me_request in for_me_requests %}
             <form method="post" action="{% url 'accept_request' for_me_request.sender.id %}">
                 {% csrf_token %}
@@ -50,7 +50,7 @@
                 </div>
              </form>
         {% endfor %}
-    
+
         {% for my_request in my_requests %}
             <form method="post" action="{% url 'decline_request' my_request.receiver.id %}">
                 {% csrf_token %}
@@ -69,7 +69,7 @@
                 </div>
              </form>
         {% endfor %}
-    
+
         {% for user in all_users %}
             <form method="post" action="{% url 'add_friend' user.id %}">
                 {% csrf_token %}
@@ -97,6 +97,10 @@
           <h3>Ripe Tomato</h3>
           <p>This time it should be ripe!</p>
         </div>
+{#          <div style="align-self: center;">#}
+{#              <button type="submit">Удалить из друзей</button>#}
+{#              <p style="color: #aaa; font-size: .95em; margin-top: 3px;">друзья</p>#}
+{#          </div>#}
       </div>
 
       <div class="item-container">
@@ -107,6 +111,10 @@
           <h3>Vegetables</h3>
           <p>Not that much, just some.</p>
         </div>
+{#          <div style="align-self: center;">#}
+{#            <button type="submit">Отменить заявку</button>#}
+{#            <p style="color: #aaa; font-size: .95em; margin-top: 3px;">ожидается ответ</p>#}
+{#        </div>#}
       </div>
 
       <div class="item-container">
@@ -117,6 +125,10 @@
           <h3>Pineapple</h3>
           <p>Oh yeah baby! I need this ASAP</p>
         </div>
+{#          <div style="align-self: center;">#}
+{#            <button type="submit">Добавить в друзья</button>#}
+{#            <p style="color: #aaa; font-size: .95em; margin-top: 3px;">не в друзьях</p>#}
+{#        </div>#}
       </div>
         
     </div>

@@ -20,10 +20,10 @@
                 
                 {% if request.user.is_authenticated %}
                     <div class="mb-40">
-                        <a href="#" class="btn">Смотреть</a>
+                        <a href="{% url 'watch_film' film.slug %}" class="btn" type="submit">Смотреть</a>
                         <form action="{% url 'create-room' film.id %}" method="POST">
                             {% csrf_token %}
-                            <button href="#" class="btn" type="submit">Смотреть вместе</button>
+                            <button class="btn" type="submit">Смотреть вместе</button>
                         </form>
                     </div>
                 {% endif %}

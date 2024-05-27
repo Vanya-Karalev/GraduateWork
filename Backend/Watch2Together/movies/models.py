@@ -38,8 +38,8 @@ class Room(models.Model):
     room_name = models.CharField(db_column='Room name')
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='OwnerID')
     film = models.ForeignKey(Film, on_delete=models.CASCADE, db_column='FilmID', null=True)
-    timer = models.FloatField(default=0, db_column='Time video')
-    pause = models.BooleanField(default=False, db_column='Pause')
+    timer = models.FloatField(default=0.0, db_column='Time video')
+    pause = models.BooleanField(default=True, db_column='Pause')
 
     def __str__(self):
         return self.room_name
