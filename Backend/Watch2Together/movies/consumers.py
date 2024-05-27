@@ -33,6 +33,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room_name = text_data_json['room_name']
             new_timer_state = text_data_json['timer_state']
             await self.update_timer_state(room_name, new_timer_state)
+            await self.channel_layer.group_send(
+                self.room_name,
+                {
+                    'type': 'timer_state',
+                    'timer_state': new_timer_state,
+                }
+            )
         else:
             message = text_data_json
             event = {
@@ -54,6 +61,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'pause_state',
             'pause_state': event['pause_state']
+        }))
+
+    async def timer_state(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'timer_state',
+            'timer_state': event['timer_state']
         }))
 
     @database_sync_to_async

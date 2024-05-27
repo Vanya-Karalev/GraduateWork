@@ -52,7 +52,7 @@
                 </ul>
             </div>
             {% if is_paused %}
-                <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png"></video>
+                <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>
             {% else %}
                 <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>
             {% endif %}
@@ -178,6 +178,7 @@
             videoTimeline.addEventListener("click", e => {
                 let timelineWidth = videoTimeline.clientWidth;
                 mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
+                socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             });
             
             mainVideo.addEventListener("timeupdate", e => {
@@ -196,6 +197,7 @@
                 progressBar.style.width = `${e.offsetX}px`;
                 mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
                 currentVidTime.innerText = formatTime(mainVideo.currentTime);
+                socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             }
             
             volumeBtn.addEventListener("click", () => {
@@ -266,6 +268,10 @@
                     } else {
                         mainVideo.play();
                     }
+                } 
+                else if (data.type === 'timer_state') {
+                    const timer = data.timer_state;
+                    console.log('Timer state:', timer);
                 } else {
                     const messageData = data.message;
                     const sender = messageData.sender;
@@ -301,12 +307,14 @@
                 playPauseBtn.classList.replace("fa-play", "fa-pause");
                 // Отправить данные о начале воспроизведения через сокеты
                 socket.send(JSON.stringify({'pause_state': false, 'room_name': '{{room_name}}'}));
+                socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             });
             {#mainVideo.addEventListener("play", () => playPauseBtn.classList.replace("fa-play", "fa-pause"));#}
             {#mainVideo.addEventListener("pause", () => playPauseBtn.classList.replace("fa-pause", "fa-play"));#}
             mainVideo.addEventListener("pause", () => {
                 playPauseBtn.classList.replace("fa-pause", "fa-play");
                 socket.send(JSON.stringify({'pause_state': true, 'room_name': '{{room_name}}'}));
+                socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             });
             playPauseBtn.addEventListener("click", () => mainVideo.paused ? mainVideo.play() : mainVideo.pause());
             videoTimeline.addEventListener("mousedown", () => videoTimeline.addEventListener("mousemove", draggableProgressBar));
@@ -382,20 +390,20 @@
                 return `${hours}:${minutes}:${seconds}`;
             }
             
-            videoTimeline.addEventListener("mousemove", e => {
-                let timelineWidth = videoTimeline.clientWidth;
-                let offsetX = e.offsetX;
-                let percent = Math.floor((offsetX / timelineWidth) * mainVideo.duration);
-                const progressTime = videoTimeline.querySelector("span");
-                offsetX = offsetX < 20 ? 20 : (offsetX > timelineWidth - 20) ? timelineWidth - 20 : offsetX;
-                progressTime.style.left = `${offsetX}px`;
-                progressTime.innerText = formatTime(percent);
-            });
-            
-            videoTimeline.addEventListener("click", e => {
-                let timelineWidth = videoTimeline.clientWidth;
-                mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
-            });
+            {#videoTimeline.addEventListener("mousemove", e => {#}
+            {#    let timelineWidth = videoTimeline.clientWidth;#}
+            {#    let offsetX = e.offsetX;#}
+            {#    let percent = Math.floor((offsetX / timelineWidth) * mainVideo.duration);#}
+            {#    const progressTime = videoTimeline.querySelector("span");#}
+            {#    offsetX = offsetX < 20 ? 20 : (offsetX > timelineWidth - 20) ? timelineWidth - 20 : offsetX;#}
+            {#    progressTime.style.left = `${offsetX}px`;#}
+            {#    progressTime.innerText = formatTime(percent);#}
+            {#});#}
+            {##}
+            {#videoTimeline.addEventListener("click", e => {#}
+            {#    let timelineWidth = videoTimeline.clientWidth;#}
+            {#    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;#}
+            {#});#}
             
             mainVideo.addEventListener("timeupdate", e => {
                 let {currentTime, duration} = e.target;
@@ -408,12 +416,12 @@
                 videoDuration.innerText = formatTime(mainVideo.duration);
             });
             
-            const draggableProgressBar = e => {
-                let timelineWidth = videoTimeline.clientWidth;
-                progressBar.style.width = `${e.offsetX}px`;
-                mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
-                currentVidTime.innerText = formatTime(mainVideo.currentTime);
-            }
+            {#const draggableProgressBar = e => {#}
+            {#    let timelineWidth = videoTimeline.clientWidth;#}
+            {#    progressBar.style.width = `${e.offsetX}px`;#}
+            {#    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;#}
+            {#    currentVidTime.innerText = formatTime(mainVideo.currentTime);#}
+            {#}#}
             
             volumeBtn.addEventListener("click", () => {
                 if(!volumeBtn.classList.contains("fa-volume-high")) {
@@ -483,6 +491,10 @@
                     } else {
                         mainVideo.play();
                     }
+                } else if (data.type === 'timer_state') {
+                    let timer = data.timer_state;
+                    console.log('Timer state:', timer);
+                    mainVideo.currentTime = data.timer_state;
                 } else {
                     const messageData = data.message;
                     const sender = messageData.sender;
