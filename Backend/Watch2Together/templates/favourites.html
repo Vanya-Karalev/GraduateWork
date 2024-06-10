@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/films.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+    <div class="container">
+        {% for film in films %}
+            {% for favorite_film in favorite_films %}
+                {% if favorite_film.film == film %}
+                    <div class="card">
+                        <div class="card-thumbnail">
+                            <img src="{{ film.poster }}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <span class="card-title">{{ film.title }}</span>
+                            <p>
+                                <span>{{ film.age }}+</span> 
+                                <span>{{ film.duration }}min</span>
+                                {% for genre in film.genres.all %}
+                                    <span>{{ genre.name }} </span>
+                                {% endfor %}
+                            </p>
+                            <p class="card-description">{{ film.description }}</p>
+                            <a href="{% url 'film_info' slug=film.slug %}">Подробнее</a>
+                            <div style="display: flex">
+                                <a class="trailer" href="{{ film.trailer }}"> <i class="fas fa-play"></i>Трейлер</a>
+                                
+                                {% if request.user.is_authenticated %}
+                                    {% if film.id in favoritee_films %}
+                                        <a class="trailer" href="{% url 'favorite' film.id %}?next=myfavoritefilms" style="margin-left: 10px"> <i class="fas fa-play"></i>Удалить из избранного</a>
+                                    {% else %}
+                                        <a class="trailer" href="{% url 'favorite' film.id %}?next=myfavoritefilms" style="margin-left: 10px"> <i class="fas fa-play"></i>Добавить в избранное</a>
+                                    {% endif %}
+                                {% endif %}
+                            
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock content %}

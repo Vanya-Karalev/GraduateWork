@@ -53,8 +53,10 @@
             </div>
             {% if is_paused %}
                 <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>
+{#                <video id='video' src="https://serpens.stream.voidboost.cc/bfa16d08d3968daccff61e2e6c83cae5:2024060107:215086a3-c849-4656-b4e3-634c6d9a2e03/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>#}
             {% else %}
                 <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>
+{#                <video id='video' src="https://serpens.stream.voidboost.cc/5ca59386bb3190b2af3cd3b8ca9db4f9:2024060208:41068d76-23fe-4a2c-abc6-dd2fcd1c6c54/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>#}
             {% endif %}
         </div>
     
@@ -112,11 +114,13 @@
             // Successful connection event
             socket.onopen = (event) => {
                 console.log("WebSocket connection opened!");
+                {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
         
             // Socket disconnect event
             socket.onclose = (event) => {
                 console.log("WebSocket connection closed!");
+                {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
             
             const container = document.querySelector(".container"),
@@ -135,7 +139,7 @@
             pipBtn = container.querySelector(".pic-in-pic span"),
             fullScreenBtn = container.querySelector(".fullscreen i");
             let timer;
-            
+            mainVideo.muted = false;
             const hideControls = () => {
                 if(mainVideo.paused) return;
                 timer = setTimeout(() => {
@@ -337,11 +341,13 @@
             // Successful connection event
             socket.onopen = (event) => {
                 console.log("WebSocket connection opened!");
+                {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
         
             // Socket disconnect event
             socket.onclose = (event) => {
                 console.log("WebSocket connection closed!");
+                {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
             
             const container = document.querySelector(".container"),
@@ -360,7 +366,7 @@
             pipBtn = container.querySelector(".pic-in-pic span"),
             fullScreenBtn = container.querySelector(".fullscreen i");
             let timer;
-            
+            mainVideo.muted = false;
             const hideControls = () => {
                 if(mainVideo.paused) return;
                 timer = setTimeout(() => {

@@ -36,7 +36,7 @@
                             <li val="Personal"><a href="{% url 'profile' %}" style="color: black">Настройки аккаунта</a></li>
                             <li val="Personal"><a href="{% url 'friends' %}" style="color: black">Друзья</a></li>
                             <li val="Personal"><a href="{% url 'notifications' %}" style="color: black">Уведомления</a></li>
-                            <li val="Personal"><a href="#" style="color: black">Избранное</a></li>
+                            <li val="Personal"><a href="{% url 'myfavoritefilms' %}" style="color: black">Избранное</a></li>
                             <li val="Personal"><a href="{% url 'subscription' %}" style="color: black">Купить подписку</a></li>
                             <li val="Exit"><a href="{% url 'logout' %}" style="color: red">Выйти</a></li>
                         </ul>
@@ -52,7 +52,7 @@
     </main>
 
     <footer>
-        <a>2024 Watch2Twogether. Все права защищены.</a>
+        <a>2024 Watch2Together. Все права защищены.</a>
     </footer>
 </body>
 

@@ -256,9 +256,15 @@ a {
     margin-right: 5px;
 }
   
-.card-description{
+.card-description {
     text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 10; /* количество строк */
+    -webkit-box-orient: vertical;
 }
+
   
 .card-body a{
     display: block;

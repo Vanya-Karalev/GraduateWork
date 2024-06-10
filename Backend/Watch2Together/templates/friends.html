@@ -22,7 +22,11 @@
                     </div>
                     <div class="text-content">
                       <h3>Fresh Milk</h3>
-                      <p>{{ friend.username }}</p>
+                        {% if requset.user == friend.sender %}
+                            <p>{{ friend.receiver }}</p>
+                        {% else %}
+                            <p>{{ friend.sender }}</p>
+                        {% endif %}
                     </div>
                     <div style="align-self: center;">
                         <button type="submit">Удалить из друзей</button>

@@ -4,8 +4,10 @@ from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from users.forms import CustomUserCreationForm, CustomUserChangeForm
 from users.models import CustomUser, Friends
+from movies.models import Film, Favorites
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.http import HttpResponseForbidden
 
 
 class SignUpView(CreateView):
@@ -135,6 +137,41 @@ def decline_request(request, user_id):
 
 def notifications(request):
     return render(request, 'notification.html')
+
+
+def favorite(request, film_id):
+    film = get_object_or_404(Film, id=film_id)
+    user = request.user
+
+    is_favorite = Favorites.objects.filter(user=user, film=film).exists()
+
+    if is_favorite:
+        Favorites.objects.filter(user=user, film=film).delete()
+    else:
+        Favorites.objects.create(user=user, film=film)
+
+    next_page = request.GET.get('next')
+    film_slug = request.GET.get('slug')
+
+    if next_page == 'film_info' and film_slug:
+        return redirect('film_info', slug=film_slug)
+    elif next_page == 'films':
+        return redirect('films')
+    elif next_page == 'myfavoritefilms':
+        return redirect('myfavoritefilms')
+    else:
+        return redirect('films')
+
+
+def my_favorite_films(request):
+    user = CustomUser.objects.get(pk=request.user.id)
+    films = Film.objects.all()
+    favorite_films = Favorites.objects.filter(user=user)
+    favoritee_films = Favorites.objects.filter(user=user).values_list('film__id', flat=True)
+    context = {'films': films,
+               'favorite_films': favorite_films,
+               'favoritee_films': favoritee_films}
+    return render(request, 'favourites.html', context)
 
 
 def subscription(request):

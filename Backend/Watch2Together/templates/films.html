@@ -22,8 +22,19 @@
                         {% endfor %}
                     </p>
                     <p class="card-description">{{ film.description }}</p>
-                    <a href="{% url 'film_info' slug=film.slug %}">Read more</a>
-                    <a class="trailer" href="{{ film.trailer }}"> <i class="fas fa-play"></i>Watch Trailer</a>
+                    <a href="{% url 'film_info' slug=film.slug %}">Подробнее</a>
+                    <div style="display: flex">
+                        <a class="trailer" href="{{ film.trailer }}"> <i class="fas fa-play"></i>Трейлер</a>
+                        
+                        {% if request.user.is_authenticated %}
+                            {% if film.id in favorite_films %}
+                                <a class="trailer" href="{% url 'favorite' film.id %}?next=films" style="margin-left: 10px"> <i class="fas fa-play"></i>Удалить из избранного</a>
+                            {% else %}
+                                <a class="trailer" href="{% url 'favorite' film.id %}?next=films" style="margin-left: 10px"> <i class="fas fa-play"></i>Добавить в избранное</a>
+                            {% endif %}
+                        {% endif %}
+                    
+                    </div>
                 </div>
             </div>
         {% endfor %}

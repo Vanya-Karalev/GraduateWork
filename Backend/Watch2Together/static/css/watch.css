@@ -6,10 +6,10 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-body{
-  min-height: 100vh;
-  background: #E3F2FD;
-}
+/*body{*/
+/*  min-height: 100vh;*/
+/*  background: #E3F2FD;*/
+/*}*/
 .container, .video-controls, .video-timer, .options{
   display: flex;
   align-items: center;
