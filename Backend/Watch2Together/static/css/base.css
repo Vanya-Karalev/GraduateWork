@@ -18,6 +18,7 @@ header {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    position:relative
 }
 
 .header-title a,
@@ -33,7 +34,7 @@ header {
 }
 
 .header-links a:active,
-.header-title a:active, 
+.header-title a:active,
 .header-profile a:active {
     color: lightgray;
 }
@@ -188,4 +189,202 @@ a {
 
 .dropdown:hover {
     background-position: right center;
+}
+
+
+.wrapper1 input {
+    outline: none;
+    border: none;
+}
+/* clears the ‘X’ icon from input field from Internet Explorer */
+.wrapper1 input[type="search"]::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+.wrapper1 input[type="search"]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+/* clears the ‘X’ icon from input field from Chrome */
+.wrapper1 input[type="search"]::-webkit-search-decoration,
+.wrapper1 input[type="search"]::-webkit-search-cancel-button,
+.wrapper1 input[type="search"]::-webkit-search-results-button,
+.wrapper1 input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+}
+
+/*.wrapper1 ul, .wrapper1 ol {*/
+/*  list-style: none;*/
+/*  padding-left: 0;*/
+/*  margin-top: 0;*/
+/*}*/
+/*.wrapper1 li {*/
+/*  margin-bottom: 1rem;*/
+/*}*/
+
+.wrapper1 button {
+    display: block;
+    background-color: transparent;
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.wrapper1 {
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.search_field {
+    position: relative;
+    width: 25rem;
+    height: 3rem;
+}
+/* Input Field */
+.searchField {
+    display: flex;
+    width: 100%;
+    height: 2.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-left: 4rem;
+
+    color: #282828;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    border-radius: 1.25rem;
+    border: 1px solid #b7b7b7;
+
+    background: #fff;
+}
+
+.searchicon {
+    position: absolute;
+    top: 0.5rem;
+    left: 1.25rem;
+}
+
+.suggestions {
+    display: none;
+    height: 0rem;
+    max-height: 20rem;
+    opacity: 0;
+
+    margin-top: 1rem;
+    padding: 1.25rem;
+
+    border-radius: 1.25rem;
+    background-color: #fff;
+
+    overflow-y: scroll;
+}
+.suggestions.openSuggestions {
+    width: 90%;
+    display: block;
+    height: auto;
+    opacity: 1;
+    animation: suggestionslideDown 0.4s ease-in-out;
+}
+@keyframes suggestionslideDown {
+    0% {
+        opacity: 0;
+        height: 0rem;
+    }
+    100% {
+        opacity: 1;
+        height: 20rem;
+    }
+}
+
+.suggestions::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 19rem;
+}
+.suggestions::-webkit-scrollbar-thumb {
+    background-color: #cdcdcd6e;
+    border-radius: 0.9rem;
+}
+
+.suggestion_item {
+    display: flex;
+    column-gap: 0.75rem;
+    padding: 1.25rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transform-origin: top center;
+    opacity: 1;
+    animation: slideDown 700ms ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.suggestion_item:hover {
+    background-color: #f1f0f0;
+}
+
+.suggestion_item span {
+    position: relative;
+    display: none;
+    height: 3rem;
+    width: 2.7rem;
+
+    border-radius: 0.2rem;
+
+    background-color: #e6e6e6;
+}
+.suggestion_item span img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.suggestion_text {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #282828;
+}
+
+.image_placeholder {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    column-gap: 0.7rem;
+    bottom: 2rem;
+    right: 2rem;
+}
+.image_placeholder label {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #434343;
+}
+
+.wrapper1 a,
+.wrapper1 a:visited,
+.wrapper1 a:hover,
+.wrapper1 a:active {
+    color: black;
 }

@@ -15,7 +15,8 @@ class Role(models.Model):
 class CustomUser(AbstractUser):
     role = models.ForeignKey(Role, models.CASCADE, db_column='RoleID', default=2)
     image = models.FileField(upload_to="images/", null=True)
-    # подписка
+    subscription = models.BooleanField(default=False, db_column='Subscription')
+    period = models.IntegerField(default=0, db_column='Subscription period')
 
 
 class Friends(models.Model):

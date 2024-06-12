@@ -37,8 +37,13 @@
                 </form>
             </div>
             <div class="profile-page__subcription">
-                <h3>Бесплатный</h3>
-                <a href="{% url 'subscription' %}">Купить подписку</a>
+                {% if request.user.subscription %}
+                    <h3>Подписка</h3>
+                    <a href="{% url 'subscription' %}">Продлить/отказаться от подписки</a>
+                {% else %}
+                    <h3>Бесплатный</h3>
+                    <a href="{% url 'subscription' %}">Купить подписку</a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -21,6 +21,31 @@
         <div class="header-links">
             <a href="{% url 'films' %}">Фильмы</a>
         </div>
+        
+        <div class="wrapper1">
+            <div class="search_field">
+                <form action="/">
+                  <input type="search" class="searchField" name="search_field" id="searchField" placeholder="Поиск..." autocomplete="off" value="" />
+                  <a>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="searchicon">
+                      <path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z" fill="rgba(40,40,40,1)"></path>
+                    </svg>
+                  </a>
+                </form>
+                <div class="suggestions" id="suggestions">
+                  <ul class="suggestion_list">
+                    {% for film in films %}
+                        <li class="suggestion_item">
+                          <div class="suggestion_text">
+                            <a href="{% url 'film_info' slug=film.slug %}">{{ film.title }}</a>
+                          </div>
+                        </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+            </div>
+        </div>
+    
         <div class="header-profile">
             {% if not request.user.is_authenticated %}
                 <a href="{% url 'admin:index' %}">Админка</a>
@@ -55,6 +80,87 @@
         <a>2024 Watch2Together. Все права защищены.</a>
     </footer>
 </body>
+
+<script>
+    const searchField = document.getElementById("searchField");
+    const suggestionBox = document.getElementById("suggestions");
+    const suggestionItems = document.querySelectorAll(".suggestion_item");
+    // Function to close the suggestion box
+    function closeSuggestionBox() {
+      suggestionBox.classList.remove("openSuggestions");
+    }
+    
+    // Add an event listener to the document to close the suggestion box when clicking outside of it
+    document.addEventListener("click", (event) => {
+      const isClickInsideSuggestionBox = suggestionBox.contains(event.target);
+      const isClickInsideSearchField = event.target === searchField;
+    
+      if (!isClickInsideSuggestionBox && !isClickInsideSearchField) {
+        closeSuggestionBox();
+      }
+    });
+    
+    // Add a click event listener to each suggestion item
+    suggestionItems.forEach((item) => {
+      item.addEventListener("click", (event) => {
+        // Prevent the click event from propagating to the document
+        event.stopPropagation();
+    
+        // Remove leading and trailing whitespace and set the input field value
+        searchField.value = item.textContent.trim();
+    
+        // Close the suggestion box after selecting a suggestion
+        closeSuggestionBox();
+    
+        // Add a 'selected' class to the clicked suggestion item for highlighting
+        suggestionItems.forEach((suggestion) => {
+          suggestion.classList.remove("selected");
+        });
+        item.classList.add("selected");
+      });
+    });
+    
+    // Add an input event listener to show/hide suggestions
+    searchField.addEventListener("input", () => {
+      const searchText = searchField.value.trim().toLowerCase();
+    
+      suggestionItems.forEach((item, index) => {
+        const suggestionText = item.textContent.toLowerCase();
+    
+        if (suggestionText.includes(searchText)) {
+          item.style.display = "flex";
+          item.style.animation = `slideDown 300ms ${
+            (index + 1) * 100
+          }ms ease-in-out`;
+        } else {
+          item.style.display = "none";
+        }
+      });
+    
+      if (searchText !== "") {
+        suggestionBox.classList.add("openSuggestions");
+      } else {
+        suggestionBox.classList.remove("openSuggestions");
+      }
+    });
+    
+    // -------- Show Images in suggestion -----------
+    
+    const placeholderImages = document.querySelectorAll(".imageplaceholder");
+    const placeholderToggle = document.getElementById("showimagePlaceholder");
+    
+    placeholderToggle.addEventListener("click", () => {
+      if (placeholderToggle.checked) {
+        placeholderImages.forEach((e) => {
+          e.style.display = "flex";
+        });
+      } else {
+        placeholderImages.forEach((e) => {
+          e.style.display = "none";
+        });
+      }
+    });
+</script>
 
 {% block js %}
 {% endblock js %}

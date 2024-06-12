@@ -176,3 +176,18 @@ def my_favorite_films(request):
 
 def subscription(request):
     return render(request, 'subscription.html')
+
+
+def buy_subscription(request, days):
+    user = request.user
+    user.subscription = True
+    user.period = user.period + days
+    user.save()
+    return redirect('subscription')
+
+
+def cancel_subscription(request):
+    user = request.user
+    user.subscription = False
+    user.save()
+    return redirect('subscription')
