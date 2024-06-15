@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from movies.models import Film, Room, Message, Favorites
-from users.models import CustomUser
+from movies.models import *
+from users.models import *
+from django.db.models import Q
 import uuid
 
 
@@ -43,13 +44,18 @@ def CreateRoom(request, film_id):
 def MessageView(request, room_name):
     get_room = Room.objects.get(room_name=room_name)
     get_messages = Message.objects.filter(room=get_room)
-
+    my_friends = Friends.objects.filter(status='friends').filter(
+        Q(sender=request.user) | Q(receiver=request.user)
+    )
+    get_room_users = RoomUsers.objects.filter(room=get_room)
     context = {
         "messages": get_messages,
         "room_name": room_name,
         "room": get_room,
         "current_time": get_room.timer,
-        "is_paused": get_room.pause
+        "is_paused": get_room.pause,
+        'friends': my_friends,
+        'room_users': get_room_users,
     }
     return render(request, 'room.html', context)
 

@@ -4,10 +4,10 @@ from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
 from users.forms import CustomUserCreationForm, CustomUserChangeForm
 from users.models import CustomUser, Friends
-from movies.models import Film, Favorites
+from movies.models import Film, Favorites, Room
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from django.http import HttpResponseForbidden
+from django.http import JsonResponse, HttpResponse
 
 
 class SignUpView(CreateView):
@@ -81,58 +81,58 @@ def friends(request):
 
 
 def add_friend(request, user_id):
-    if request.method == 'POST':
-        receiver = get_object_or_404(CustomUser, id=user_id)
-        friend_request = Friends(sender=request.user, receiver=receiver, status='request_sent')
-        friend_request.save()
-        return redirect('friends')
+    # if request.method == 'POST':
+    receiver = get_object_or_404(CustomUser, id=user_id)
+    friend_request = Friends(sender=request.user, receiver=receiver, status='request_sent')
+    friend_request.save()
+    return redirect('friends')
 
 
 def remove_friend(request, friend_id):
-    if request.method == 'POST':
-        friend = Friends.objects.filter(id=friend_id, sender_id=request.user).first()
-        if not friend:
-            friend = Friends.objects.filter(id=friend_id, receiver_id=request.user).first()
+    # if request.method == 'POST':
+    friend = Friends.objects.filter(id=friend_id, sender_id=request.user).first()
+    if not friend:
+        friend = Friends.objects.filter(id=friend_id, receiver_id=request.user).first()
 
-        if friend.sender == request.user:
-            user_to_remove = get_object_or_404(CustomUser, id=friend.receiver.id)
-        else:
-            user_to_remove = get_object_or_404(CustomUser, id=friend.sender.id)
+    if friend.sender == request.user:
+        user_to_remove = get_object_or_404(CustomUser, id=friend.receiver.id)
+    else:
+        user_to_remove = get_object_or_404(CustomUser, id=friend.sender.id)
 
-        friendship = Friends.objects.filter(
-            Q(sender=request.user, receiver=user_to_remove) |
-            Q(sender=user_to_remove, receiver=request.user),
-            status='friends'
-        ).first()
+    friendship = Friends.objects.filter(
+        Q(sender=request.user, receiver=user_to_remove) |
+        Q(sender=user_to_remove, receiver=request.user),
+        status='friends'
+    ).first()
 
-        if friendship:
-            friendship.delete()
+    if friendship:
+        friendship.delete()
 
-        return redirect('friends')
+    return redirect('friends')
 
 
 def accept_request(request, user_id):
-    if request.method == 'POST':
-        sender = get_object_or_404(CustomUser, id=user_id)
+    # if request.method == 'POST':
+    sender = get_object_or_404(CustomUser, id=user_id)
 
-        friend_request = get_object_or_404(Friends, sender=sender, receiver=request.user, status='request_sent')
+    friend_request = get_object_or_404(Friends, sender=sender, receiver=request.user, status='request_sent')
 
-        friend_request.status = 'friends'
-        friend_request.save()
+    friend_request.status = 'friends'
+    friend_request.save()
 
-        return redirect('friends')
+    return redirect('friends')
 
 
 def decline_request(request, user_id):
-    if request.method == 'POST':
-        receiver = get_object_or_404(CustomUser, id=user_id)
+    # if request.method == 'POST':
+    receiver = get_object_or_404(CustomUser, id=user_id)
 
-        friendship = Friends.objects.filter(sender=request.user, receiver=receiver).first()
+    friendship = Friends.objects.filter(sender=request.user, receiver=receiver).first()
 
-        if friendship:
-            friendship.delete()
+    if friendship:
+        friendship.delete()
 
-        return redirect('friends')
+    return redirect('friends')
 
 
 def notifications(request):
@@ -191,3 +191,18 @@ def cancel_subscription(request):
     user.subscription = False
     user.save()
     return redirect('subscription')
+
+
+def invite_friend(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        room_id = request.POST.get('room_id')
+        receiver = get_object_or_404(CustomUser, id=user_id)
+        print(receiver.username)
+        room = get_object_or_404(Room, id=room_id)
+        print(room.room_name)
+
+        # Your invitation logic here
+
+        return JsonResponse({'status': 'success', 'message': f'{receiver.username} has been invited to {room.room_name}'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

@@ -21,7 +21,7 @@
         <div class="header-links">
             <a href="{% url 'films' %}">Фильмы</a>
         </div>
-        
+
         <div class="wrapper1">
             <div class="search_field">
                 <form action="/">
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="header-profile">
             {% if not request.user.is_authenticated %}
                 <a href="{% url 'admin:index' %}">Админка</a>
@@ -89,29 +89,29 @@
     function closeSuggestionBox() {
       suggestionBox.classList.remove("openSuggestions");
     }
-    
+
     // Add an event listener to the document to close the suggestion box when clicking outside of it
     document.addEventListener("click", (event) => {
       const isClickInsideSuggestionBox = suggestionBox.contains(event.target);
       const isClickInsideSearchField = event.target === searchField;
-    
+
       if (!isClickInsideSuggestionBox && !isClickInsideSearchField) {
         closeSuggestionBox();
       }
     });
-    
+
     // Add a click event listener to each suggestion item
     suggestionItems.forEach((item) => {
       item.addEventListener("click", (event) => {
         // Prevent the click event from propagating to the document
         event.stopPropagation();
-    
+
         // Remove leading and trailing whitespace and set the input field value
         searchField.value = item.textContent.trim();
-    
+
         // Close the suggestion box after selecting a suggestion
         closeSuggestionBox();
-    
+
         // Add a 'selected' class to the clicked suggestion item for highlighting
         suggestionItems.forEach((suggestion) => {
           suggestion.classList.remove("selected");
@@ -119,14 +119,14 @@
         item.classList.add("selected");
       });
     });
-    
+
     // Add an input event listener to show/hide suggestions
     searchField.addEventListener("input", () => {
       const searchText = searchField.value.trim().toLowerCase();
-    
+
       suggestionItems.forEach((item, index) => {
         const suggestionText = item.textContent.toLowerCase();
-    
+
         if (suggestionText.includes(searchText)) {
           item.style.display = "flex";
           item.style.animation = `slideDown 300ms ${
@@ -136,19 +136,19 @@
           item.style.display = "none";
         }
       });
-    
+
       if (searchText !== "") {
         suggestionBox.classList.add("openSuggestions");
       } else {
         suggestionBox.classList.remove("openSuggestions");
       }
     });
-    
+
     // -------- Show Images in suggestion -----------
-    
+
     const placeholderImages = document.querySelectorAll(".imageplaceholder");
     const placeholderToggle = document.getElementById("showimagePlaceholder");
-    
+
     placeholderToggle.addEventListener("click", () => {
       if (placeholderToggle.checked) {
         placeholderImages.forEach((e) => {

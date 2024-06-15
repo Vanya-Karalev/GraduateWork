@@ -4,88 +4,156 @@
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/room.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/watch.css' %}"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    {#    <script src="{% static 'css/invite.js' %}"></script>#}
 {% endblock styles %}
 
 {% block content %}
-    <div style="display: flex">
-        <div class="container show-controls">
-            <div class="wrapper">
-                <div class="video-timeline">
-                    <div class="progress-area">
-                        <span>00:00</span>
-                        <div class="progress-bar"></div>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="display: block;">
+            <div class="container show-controls">
+                <div class="wrapper">
+                    <div class="video-timeline">
+                        <div class="progress-area">
+                            <span>00:00</span>
+                            <div class="progress-bar"></div>
+                        </div>
                     </div>
+                    <ul class="video-controls">
+                        <li class="options left">
+                            <button class="volume"><i class="fa-solid fa-volume-high"></i></button>
+                            <input type="range" min="0" max="1" step="any">
+                            <div class="video-timer">
+                                <p class="current-time">00:00</p>
+                                <p class="separator"> / </p>
+                                <p class="video-duration">00:00</p>
+                            </div>
+                        </li>
+                        <li class="options center">
+                            <button class="skip-backward"><i class="fas fa-backward"></i></button>
+                            <button class="play-pause"><i class="fas fa-play"></i></button>
+                            <button class="skip-forward"><i class="fas fa-forward"></i></button>
+                        </li>
+                        <li class="options right">
+                            <div class="playback-content">
+                                <button class="playback-speed"><span
+                                        class="material-symbols-rounded">slow_motion_video</span></button>
+                                <ul class="speed-options">
+                                    <li data-speed="2">2x</li>
+                                    <li data-speed="1.5">1.5x</li>
+                                    <li data-speed="1" class="active">Normal</li>
+                                    <li data-speed="0.75">0.75x</li>
+                                    <li data-speed="0.5">0.5x</li>
+                                </ul>
+                            </div>
+                            <button class="pic-in-pic"><span class="material-icons">picture_in_picture_alt</span>
+                            </button>
+                            <button class="fullscreen"><i class="fa-solid fa-expand"></i></button>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="video-controls">
-                    <li class="options left">
-                        <button class="volume"><i class="fa-solid fa-volume-high"></i></button>
-                        <input type="range" min="0" max="1" step="any">
-                        <div class="video-timer">
-                            <p class="current-time">00:00</p>
-                            <p class="separator"> / </p>
-                            <p class="video-duration">00:00</p>
-                        </div>
-                    </li>
-                    <li class="options center">
-                        <button class="skip-backward"><i class="fas fa-backward"></i></button>
-                        <button class="play-pause"><i class="fas fa-play"></i></button>
-                        <button class="skip-forward"><i class="fas fa-forward"></i></button>
-                    </li>
-                    <li class="options right">
-                        <div class="playback-content">
-                            <button class="playback-speed"><span class="material-symbols-rounded">slow_motion_video</span></button>
-                            <ul class="speed-options">
-                                <li data-speed="2">2x</li>
-                                <li data-speed="1.5">1.5x</li>
-                                <li data-speed="1" class="active">Normal</li>
-                                <li data-speed="0.75">0.75x</li>
-                                <li data-speed="0.5">0.5x</li>
-                            </ul>
-                        </div>
-                        <button class="pic-in-pic"><span class="material-icons">picture_in_picture_alt</span></button>
-                        <button class="fullscreen"><i class="fa-solid fa-expand"></i></button>
-                    </li>
-                </ul>
+                {% if is_paused %}
+                    <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4"
+                           poster="https://assets.codepen.io/32795/poster.png" muted></video>
+                    {#                <video id='video' src="https://serpens.stream.voidboost.cc/bfa16d08d3968daccff61e2e6c83cae5:2024060107:215086a3-c849-4656-b4e3-634c6d9a2e03/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>#}
+                {% else %}
+                    <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4"
+                           poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>
+                    {#                <video id='video' src="https://serpens.stream.voidboost.cc/5ca59386bb3190b2af3cd3b8ca9db4f9:2024060208:41068d76-23fe-4a2c-abc6-dd2fcd1c6c54/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>#}
+                {% endif %}
             </div>
-            {% if is_paused %}
-                <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>
-{#                <video id='video' src="https://serpens.stream.voidboost.cc/bfa16d08d3968daccff61e2e6c83cae5:2024060107:215086a3-c849-4656-b4e3-634c6d9a2e03/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" muted></video>#}
-            {% else %}
-                <video id='video' src="http://media.w3.org/2010/05/sintel/trailer.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>
-{#                <video id='video' src="https://serpens.stream.voidboost.cc/5ca59386bb3190b2af3cd3b8ca9db4f9:2024060208:41068d76-23fe-4a2c-abc6-dd2fcd1c6c54/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>#}
-            {% endif %}
+            <div style="display: flex" class="invitemyfriends">
+                {% if request.user == room.owner %}
+                    <div id="openModalButton" class="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#5C5C5C" width="35"
+                             height="35">
+                            <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"></path>
+                        </svg>
+                    </div>
+                    
+                    <div id="modal" class="main">
+                        <div class="content">
+                            <div class="header">
+                                <span id="closeModalButton" class="close">&times;</span>
+                                <h2>Пригласить в комнату</h2>
+                            </div>
+                            <div class="body">
+                                {% for friend in friends %}
+                                    <div class="item-container">
+                                        <div class="img">
+                                            <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="">
+                                        </div>
+                                        <div class="text-content">
+                                            <h3>Fresh Milk</h3>
+                                            {% if requset.user == friend.sender %}
+                                                <p>{{ friend.receiver }}</p>
+                                            {% else %}
+                                                <p>{{ friend.sender }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div style="align-self: center;">
+                                            {% if requset.user == friend.sender %}
+                                                <a href="#"
+                                                   onclick="inviteFriend({{ friend.receiver.id }}, {{ room.id }}); return false;">Пригласить</a>
+                                                {#                                            <a href="{% url 'invite_friend' friend.receiver.id room.id %}">Пригласить</a>#}
+                                            {% else %}
+                                                <a href="#"
+                                                   onclick="inviteFriend({{ friend.sender.id }}, {{ room.id }}); return false;">Пригласить</a>
+                                                {#                                            <a href="{% url 'invite_friend' friend.sender.id room.id %}">Пригласить</a>#}
+                                            {% endif %}
+                                            <p style="color: #aaa; font-size: .95em; margin-top: 3px;">друзья</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% for room_user in room_users %}
+                    <div id="userDiv{{ room_user.user.id }}" style="margin: 10px; background-color: {% if room_user.user == room.owner %}whitesmoke{% else %}#434343{% endif %}; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                        {% if room_user.user.image and room_user.user.image.url %}
+                            <img src="{{ room_user.user.image.url }}" alt="User Image" style="height: 70px; border-radius: 10px;">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Default Image" style="height: 70px; border-radius: 10px;">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+            </div>
         </div>
-    
         <div class="parent">
             <div class="child-2">
-                <center><h2>Chat</h2></center>
+                <center><h2 style="color: white">Chat</h2></center>
                 <div class="chat-body-parent">
                     <div class="chat-body" id="tasks">
-    
+
                         <div class="message" id="chatContainer">
                             <!-- Received messages are displayed here -->
                             {% for i in messages %}
                                 {% if i.sender != user %}
                                     <div class="receive">
-                                        <p style="color: #000;"> {{i.message}}<strong>-{{i.sender}}</strong></p>
+                                        <p style="color: #000;"> {{ i.message }}<strong>-{{ i.sender }}</strong></p>
                                     </div>
                                 {% else %}
                                     <div class="send">
-                                        <p style="color: #000;">{{i.message}}</p>
+                                        <p style="color: #000;">{{ i.message }}</p>
                                     </div>
                                 {% endif %}
                             {% endfor %}
                             <!-- End of received messages -->
                         </div>
-    
+
                         <div class="form">
                             <form action="" id="message-form" method="POST">
                                 {% csrf_token %}
-                                <textarea id="msg" cols="30" name="message" rows="10" style="resize: none" placeholder="Enter your message" required></textarea>
+                                <textarea id="msg" cols="30" name="message" rows="10" style="resize: none"
+                                          placeholder="Enter your message" required></textarea>
                                 <button class="submit" type="submit">Send</button>
                             </form>
                         </div>
@@ -99,29 +167,77 @@
 {% block js %}
     {% if request.user == room.owner %}
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const modal = document.getElementById("modal");
+                const openModalButton = document.getElementById("openModalButton");
+                const closeModalButton = document.getElementById("closeModalButton");
+
+                openModalButton.addEventListener("click", function () {
+                    modal.style.display = "block";
+                });
+
+                closeModalButton.addEventListener("click", function () {
+                    modal.style.display = "none";
+                });
+
+                window.addEventListener("click", function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+
+            function inviteFriend(userId, roomId) {
+                $.ajax({
+                    url: "{% url 'invite_friend' %}",
+                    type: 'POST',
+                    data: {
+                        'user_id': userId,
+                        'room_id': roomId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            alert(response.message);
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('AJAX error: ' + error);
+                    }
+                });
+            }
+
             function scrollToBottom() {
                 var chatContainer = document.getElementById("chatContainer");
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
-        
+
             // Determine the WebSocket protocol based on the application's URL
             const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
             const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
-        
+
             // Create a new WebSocket connection
             const socket = new WebSocket(wsEndpoint);
-        
+
             // Successful connection event
             socket.onopen = (event) => {
                 console.log("WebSocket connection opened!");
+                socket.send(JSON.stringify({'connect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
-        
+
             // Socket disconnect event
             socket.onclose = (event) => {
                 console.log("WebSocket connection closed!");
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
+            
+            window.addEventListener('beforeunload', function (event) {
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
+            });
             
             const container = document.querySelector(".container"),
             mainVideo = container.querySelector("video"),
@@ -141,34 +257,34 @@
             let timer;
             mainVideo.muted = false;
             const hideControls = () => {
-                if(mainVideo.paused) return;
+                if (mainVideo.paused) return;
                 timer = setTimeout(() => {
                     container.classList.remove("show-controls");
                 }, 3000);
             }
             hideControls();
-            
+
             container.addEventListener("mousemove", () => {
                 container.classList.add("show-controls");
                 clearTimeout(timer);
                 hideControls();
             });
-            
+
             const formatTime = time => {
                 let seconds = Math.floor(time % 60),
-                minutes = Math.floor(time / 60) % 60,
-                hours = Math.floor(time / 3600);
-            
+                    minutes = Math.floor(time / 60) % 60,
+                    hours = Math.floor(time / 3600);
+
                 seconds = seconds < 10 ? `0${seconds}` : seconds;
                 minutes = minutes < 10 ? `0${minutes}` : minutes;
                 hours = hours < 10 ? `0${hours}` : hours;
-            
-                if(hours == 0) {
+
+                if (hours == 0) {
                     return `${minutes}:${seconds}`
                 }
                 return `${hours}:${minutes}:${seconds}`;
             }
-            
+
             videoTimeline.addEventListener("mousemove", e => {
                 let timelineWidth = videoTimeline.clientWidth;
                 let offsetX = e.offsetX;
@@ -178,24 +294,24 @@
                 progressTime.style.left = `${offsetX}px`;
                 progressTime.innerText = formatTime(percent);
             });
-            
+
             videoTimeline.addEventListener("click", e => {
                 let timelineWidth = videoTimeline.clientWidth;
                 mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
                 socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             });
-            
+
             mainVideo.addEventListener("timeupdate", e => {
                 let {currentTime, duration} = e.target;
                 let percent = (currentTime / duration) * 100;
                 progressBar.style.width = `${percent}%`;
                 currentVidTime.innerText = formatTime(currentTime);
             });
-            
+
             mainVideo.addEventListener("loadeddata", () => {
                 videoDuration.innerText = formatTime(mainVideo.duration);
             });
-            
+
             const draggableProgressBar = e => {
                 let timelineWidth = videoTimeline.clientWidth;
                 progressBar.style.width = `${e.offsetX}px`;
@@ -203,9 +319,9 @@
                 currentVidTime.innerText = formatTime(mainVideo.currentTime);
                 socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));
             }
-            
+
             volumeBtn.addEventListener("click", () => {
-                if(!volumeBtn.classList.contains("fa-volume-high")) {
+                if (!volumeBtn.classList.contains("fa-volume-high")) {
                     mainVideo.volume = 0.5;
                     volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
                 } else {
@@ -214,15 +330,15 @@
                 }
                 volumeSlider.value = mainVideo.volume;
             });
-            
+
             volumeSlider.addEventListener("input", e => {
                 mainVideo.volume = e.target.value;
-                if(e.target.value == 0) {
+                if (e.target.value == 0) {
                     return volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
                 }
                 volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
             });
-            
+
             speedOptions.querySelectorAll("li").forEach(option => {
                 option.addEventListener("click", () => {
                     mainVideo.playbackRate = option.dataset.speed;
@@ -230,25 +346,25 @@
                     option.classList.add("active");
                 });
             });
-            
+
             document.addEventListener("click", e => {
-                if(e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
+                if (e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
                     speedOptions.classList.remove("show");
                 }
             });
-            
+
             fullScreenBtn.addEventListener("click", () => {
                 container.classList.toggle("fullscreen");
-                if(document.fullscreenElement) {
+                if (document.fullscreenElement) {
                     fullScreenBtn.classList.replace("fa-compress", "fa-expand");
                     return document.exitFullscreen();
                 }
                 fullScreenBtn.classList.replace("fa-expand", "fa-compress");
                 container.requestFullscreen();
             });
-            
+
             // Form submit listener
-            document.getElementById('message-form').addEventListener('submit', function(event){
+            document.getElementById('message-form').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const message = document.getElementById('msg').value;
                 socket.send(
@@ -259,11 +375,11 @@
                     })
                 );
             });
-        
+
             // Response from consumer on the server
             socket.addEventListener("message", (event) => {
                 const data = JSON.parse(event.data);
-                
+
                 if (data.type === 'pause_state') {
                     const isPaused = data.pause_state;
                     console.log('Pause state:', isPaused);
@@ -272,20 +388,39 @@
                     } else {
                         mainVideo.play();
                     }
-                } 
-                else if (data.type === 'timer_state') {
+                } else if (data.type === 'timer_state') {
                     const timer = data.timer_state;
                     console.log('Timer state:', timer);
+                } else if (data.type === 'connect') {
+                    const conuserimg = data.connect_user;
+                    const divID = data.div_id;
+                    const userDiv = document.querySelector('.invitemyfriends');
+                    const userImageUrl = conuserimg ? conuserimg : null;
+                    const defaultImageUrl = 'https://randomuser.me/api/portraits/men/32.jpg';
+
+                    const imageUrl = userImageUrl ? userImageUrl : defaultImageUrl;
+
+                    userDiv.innerHTML += `
+                        <div id="userDiv${divID}" style="margin: 10px; background-color: #434343; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <img src="${imageUrl}" alt="" style="height: 70px; border-radius: 10px;">
+                        </div>
+                    `;
+                } else if (data.type === 'disconnect') {
+                    const divId = 'userDiv' + data.div_id;
+                    const userDiv = document.getElementById(divId);
+                    if (userDiv) {
+                        userDiv.parentNode.removeChild(userDiv);
+                    }
                 } else {
                     const messageData = data.message;
                     const sender = messageData.sender;
                     const message = messageData.message;
-            
+                    
                     // Empty the message input field after the message has been sent
                     if (sender === '{{user}}') {
                         document.getElementById('msg').value = '';
                     }
-            
+
                     // Append the message to the chatbox
                     const messageDiv = document.querySelector('.message');
                     if (sender !== '{{user}}') {
@@ -296,7 +431,7 @@
                     scrollToBottom();
                 }
             });
-            
+
             speedBtn.addEventListener("click", () => speedOptions.classList.toggle("show"));
             pipBtn.addEventListener("click", () => mainVideo.requestPictureInPicture());
             skipBackward.addEventListener("click", () => {
@@ -330,25 +465,31 @@
                 var chatContainer = document.getElementById("chatContainer");
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
-        
+
             // Determine the WebSocket protocol based on the application's URL
             const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";
             const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;
-        
+
             // Create a new WebSocket connection
             const socket = new WebSocket(wsEndpoint);
-        
+
             // Successful connection event
             socket.onopen = (event) => {
                 console.log("WebSocket connection opened!");
+                socket.send(JSON.stringify({'connect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
-        
+
             // Socket disconnect event
             socket.onclose = (event) => {
                 console.log("WebSocket connection closed!");
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
+            
+            window.addEventListener('beforeunload', function (event) {
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
+            });
             
             const container = document.querySelector(".container"),
             mainVideo = container.querySelector("video"),
@@ -368,69 +509,47 @@
             let timer;
             mainVideo.muted = false;
             const hideControls = () => {
-                if(mainVideo.paused) return;
+                if (mainVideo.paused) return;
                 timer = setTimeout(() => {
                     container.classList.remove("show-controls");
                 }, 3000);
             }
             hideControls();
-            
+
             container.addEventListener("mousemove", () => {
                 container.classList.add("show-controls");
                 clearTimeout(timer);
                 hideControls();
             });
-            
+
             const formatTime = time => {
                 let seconds = Math.floor(time % 60),
-                minutes = Math.floor(time / 60) % 60,
-                hours = Math.floor(time / 3600);
-            
+                    minutes = Math.floor(time / 60) % 60,
+                    hours = Math.floor(time / 3600);
+
                 seconds = seconds < 10 ? `0${seconds}` : seconds;
                 minutes = minutes < 10 ? `0${minutes}` : minutes;
                 hours = hours < 10 ? `0${hours}` : hours;
-            
-                if(hours == 0) {
+
+                if (hours == 0) {
                     return `${minutes}:${seconds}`
                 }
                 return `${hours}:${minutes}:${seconds}`;
             }
-            
-            {#videoTimeline.addEventListener("mousemove", e => {#}
-            {#    let timelineWidth = videoTimeline.clientWidth;#}
-            {#    let offsetX = e.offsetX;#}
-            {#    let percent = Math.floor((offsetX / timelineWidth) * mainVideo.duration);#}
-            {#    const progressTime = videoTimeline.querySelector("span");#}
-            {#    offsetX = offsetX < 20 ? 20 : (offsetX > timelineWidth - 20) ? timelineWidth - 20 : offsetX;#}
-            {#    progressTime.style.left = `${offsetX}px`;#}
-            {#    progressTime.innerText = formatTime(percent);#}
-            {#});#}
-            {##}
-            {#videoTimeline.addEventListener("click", e => {#}
-            {#    let timelineWidth = videoTimeline.clientWidth;#}
-            {#    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;#}
-            {#});#}
-            
+
             mainVideo.addEventListener("timeupdate", e => {
                 let {currentTime, duration} = e.target;
                 let percent = (currentTime / duration) * 100;
                 progressBar.style.width = `${percent}%`;
                 currentVidTime.innerText = formatTime(currentTime);
             });
-            
+
             mainVideo.addEventListener("loadeddata", () => {
                 videoDuration.innerText = formatTime(mainVideo.duration);
             });
-            
-            {#const draggableProgressBar = e => {#}
-            {#    let timelineWidth = videoTimeline.clientWidth;#}
-            {#    progressBar.style.width = `${e.offsetX}px`;#}
-            {#    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;#}
-            {#    currentVidTime.innerText = formatTime(mainVideo.currentTime);#}
-            {#}#}
-            
+
             volumeBtn.addEventListener("click", () => {
-                if(!volumeBtn.classList.contains("fa-volume-high")) {
+                if (!volumeBtn.classList.contains("fa-volume-high")) {
                     mainVideo.volume = 0.5;
                     volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
                 } else {
@@ -439,15 +558,15 @@
                 }
                 volumeSlider.value = mainVideo.volume;
             });
-            
+
             volumeSlider.addEventListener("input", e => {
                 mainVideo.volume = e.target.value;
-                if(e.target.value == 0) {
+                if (e.target.value == 0) {
                     return volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
                 }
                 volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
             });
-            
+
             speedOptions.querySelectorAll("li").forEach(option => {
                 option.addEventListener("click", () => {
                     mainVideo.playbackRate = option.dataset.speed;
@@ -455,25 +574,25 @@
                     option.classList.add("active");
                 });
             });
-            
+
             document.addEventListener("click", e => {
-                if(e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
+                if (e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
                     speedOptions.classList.remove("show");
                 }
             });
-            
+
             fullScreenBtn.addEventListener("click", () => {
                 container.classList.toggle("fullscreen");
-                if(document.fullscreenElement) {
+                if (document.fullscreenElement) {
                     fullScreenBtn.classList.replace("fa-compress", "fa-expand");
                     return document.exitFullscreen();
                 }
                 fullScreenBtn.classList.replace("fa-expand", "fa-compress");
                 container.requestFullscreen();
             });
-            
+
             // Form submit listener
-            document.getElementById('message-form').addEventListener('submit', function(event){
+            document.getElementById('message-form').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const message = document.getElementById('msg').value;
                 socket.send(
@@ -484,11 +603,11 @@
                     })
                 );
             });
-        
+
             // Response from consumer on the server
             socket.addEventListener("message", (event) => {
                 const data = JSON.parse(event.data);
-                
+
                 if (data.type === 'pause_state') {
                     let isPaused = data.pause_state;
                     console.log('Pause state:', isPaused);
@@ -501,16 +620,36 @@
                     let timer = data.timer_state;
                     console.log('Timer state:', timer);
                     mainVideo.currentTime = data.timer_state;
+                } else if (data.type === 'connect') {
+                    const conuserimg = data.connect_user;
+                    const divID = data.div_id;
+                    const userDiv = document.querySelector('.invitemyfriends');
+                    const userImageUrl = conuserimg ? conuserimg : null;
+                    const defaultImageUrl = 'https://randomuser.me/api/portraits/men/32.jpg';
+
+                    const imageUrl = userImageUrl ? userImageUrl : defaultImageUrl;
+
+                    userDiv.innerHTML += `
+                        <div id="userDiv${divID}" style="margin: 10px; background-color: #434343; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            <img src="${imageUrl}" alt="" style="height: 70px; border-radius: 10px;">
+                        </div>
+                    `;
+                } else if (data.type === 'disconnect') {
+                    const divId = 'userDiv' + data.div_id;
+                    const userDiv = document.getElementById(divId);
+                    if (userDiv) {
+                        userDiv.parentNode.removeChild(userDiv);
+                    }
                 } else {
                     const messageData = data.message;
                     const sender = messageData.sender;
                     const message = messageData.message;
-            
+
                     // Empty the message input field after the message has been sent
                     if (sender === '{{user}}') {
                         document.getElementById('msg').value = '';
                     }
-            
+
                     // Append the message to the chatbox
                     const messageDiv = document.querySelector('.message');
                     if (sender !== '{{user}}') {
@@ -521,7 +660,7 @@
                     scrollToBottom();
                 }
             });
-            
+
             {#speedBtn.addEventListener("click", () => speedOptions.classList.toggle("show"));#}
             pipBtn.addEventListener("click", () => mainVideo.requestPictureInPicture());
             {#skipBackward.addEventListener("click", () => mainVideo.currentTime -= 5);#}

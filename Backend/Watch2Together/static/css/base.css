@@ -249,7 +249,7 @@ a {
 
 .search_field {
     position: relative;
-    width: 25rem;
+    width: 25vw;
     height: 3rem;
 }
 /* Input Field */
@@ -293,7 +293,7 @@ a {
     overflow-y: scroll;
 }
 .suggestions.openSuggestions {
-    width: 90%;
+    /*width: 90%;*/
     display: block;
     height: auto;
     opacity: 1;

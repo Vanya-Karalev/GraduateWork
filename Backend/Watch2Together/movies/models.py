@@ -65,11 +65,13 @@ class Favorites(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Favorite: {self.film.title}"
 
-# class RoomUsers(models.Model):
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='UserID')
-#
-#     class Meta:
-#         db_table = 'RoomUsers'
-#
-#     def __str__(self):
-#         return str(self.pk)
+
+class RoomUsers(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='RoomUserID')
+
+    class Meta:
+        db_table = 'RoomUsers'
+
+    def __str__(self):
+        return f"room: {self.room.room_name}, user: {self.user.username}"

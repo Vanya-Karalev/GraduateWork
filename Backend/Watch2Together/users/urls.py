@@ -4,6 +4,7 @@ from . import views
 
 
 urlpatterns = [
+    path('invite_friend/', views.invite_friend, name='invite_friend'),
     path('buy-subscription/<int:days>', views.buy_subscription, name='buy_subscription'),
     path('cancel-subscription/', views.cancel_subscription, name='cancel_subscription'),
     path('myfavoritefilms/', views.my_favorite_films, name='myfavoritefilms'),

@@ -6,16 +6,16 @@
 {% endblock styles %}
 
 {% block content %}
-    <div class="main">
-  <div class="content">
-    <div class="header">
-      <h2>Friends</h2>
-    </div>
-    <div class="body">
+<div class="main">
+    <div class="content">
+        <div class="header">
+            <h2>Friends</h2>
+        </div>
+        <div class="body">
     
         {% for friend in friends %}
-            <form method="post" action="{% url 'remove_friend' friend.id %}">
-                {% csrf_token %}
+{#            <form method="post" action="{% url 'remove_friend' friend.id %}">#}
+{#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
                       <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="">
@@ -29,16 +29,17 @@
                         {% endif %}
                     </div>
                     <div style="align-self: center;">
-                        <button type="submit">Удалить из друзей</button>
+{#                        <button type="submit">Удалить из друзей</button>#}
+                        <a href="{% url 'remove_friend' friend.id %}">Удалить из друзей</a>
                         <p style="color: #aaa; font-size: .95em; margin-top: 3px;">друзья</p>
                     </div>
                 </div>
-             </form>
+{#             </form>#}
         {% endfor %}
 
         {% for for_me_request in for_me_requests %}
-            <form method="post" action="{% url 'accept_request' for_me_request.sender.id %}">
-                {% csrf_token %}
+{#            <form method="post" action="{% url 'accept_request' for_me_request.sender.id %}">#}
+{#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
                       <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
@@ -48,16 +49,17 @@
                       <p>{{ for_me_request.sender.username }}</p>
                     </div>
                     <div style="align-self: center;">
-                        <button type="submit">Принять заявку</button>
+                        <a href="{% url 'accept_request' for_me_request.sender.id %}">Принять заявку</a>
+{#                        <button type="submit">Принять заявку</button>#}
                         <p style="color: #aaa; font-size: .95em; margin-top: 3px;">ожидает ответа</p>
                     </div>
                 </div>
-             </form>
+{#             </form>#}
         {% endfor %}
 
         {% for my_request in my_requests %}
-            <form method="post" action="{% url 'decline_request' my_request.receiver.id %}">
-                {% csrf_token %}
+{#            <form method="post" action="{% url 'decline_request' my_request.receiver.id %}">#}
+{#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
                       <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
@@ -67,16 +69,17 @@
                       <p>{{ my_request.receiver.username }}</p>
                     </div>
                     <div style="align-self: center;">
-                        <button type="submit">Отменить заявку</button>
+                        <a href="{% url 'decline_request' my_request.receiver.id %}">Отменить заявку</a>
+{#                        <button type="submit">Отменить заявку</button>#}
                         <p style="color: #aaa; font-size: .95em; margin-top: 3px;">вы ожидаете ответа</p>
                     </div>
                 </div>
-             </form>
+{#             </form>#}
         {% endfor %}
 
         {% for user in all_users %}
-            <form method="post" action="{% url 'add_friend' user.id %}">
-                {% csrf_token %}
+{#            <form method="post" action="{% url 'add_friend' user.id %}">#}
+{#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
                       <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">
@@ -86,56 +89,57 @@
                       <p>{{ user.username }}</p>
                     </div>
                     <div style="align-self: center;">
-                        <button type="submit">Добавить в друзья</button>
+                        <a href="{% url 'add_friend' user.id %}">Добавить в друзья</a>
+{#                        <button type="submit">Добавить в друзья</button>#}
                         <p style="color: #aaa; font-size: .95em; margin-top: 3px;">не в друзьях</p>
                     </div>
                 </div>
-             </form>
+{#             </form>#}
         {% endfor %}
     
-      <div class="item-container">
-        <div class="img">
-          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
-        </div>
-        <div class="text-content">
-          <h3>Ripe Tomato</h3>
-          <p>This time it should be ripe!</p>
-        </div>
+{#      <div class="item-container">#}
+{#        <div class="img">#}
+{#          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">#}
+{#        </div>#}
+{#        <div class="text-content">#}
+{#          <h3>Ripe Tomato</h3>#}
+{#          <p>This time it should be ripe!</p>#}
+{#        </div>#}
 {#          <div style="align-self: center;">#}
 {#              <button type="submit">Удалить из друзей</button>#}
 {#              <p style="color: #aaa; font-size: .95em; margin-top: 3px;">друзья</p>#}
 {#          </div>#}
-      </div>
-
-      <div class="item-container">
-        <div class="img">
-          <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">
-        </div>
-        <div class="text-content">
-          <h3>Vegetables</h3>
-          <p>Not that much, just some.</p>
-        </div>
+{#      </div>#}
+{##}
+{#      <div class="item-container">#}
+{#        <div class="img">#}
+{#          <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">#}
+{#        </div>#}
+{#        <div class="text-content">#}
+{#          <h3>Vegetables</h3>#}
+{#          <p>Not that much, just some.</p>#}
+{#        </div>#}
 {#          <div style="align-self: center;">#}
 {#            <button type="submit">Отменить заявку</button>#}
 {#            <p style="color: #aaa; font-size: .95em; margin-top: 3px;">ожидается ответ</p>#}
 {#        </div>#}
-      </div>
-
-      <div class="item-container">
-        <div class="img">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
-        </div>
-        <div class="text-content">
-          <h3>Pineapple</h3>
-          <p>Oh yeah baby! I need this ASAP</p>
-        </div>
+{#      </div>#}
+{##}
+{#      <div class="item-container">#}
+{#        <div class="img">#}
+{#          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">#}
+{#        </div>#}
+{#        <div class="text-content">#}
+{#          <h3>Pineapple</h3>#}
+{#          <p>Oh yeah baby! I need this ASAP</p>#}
+{#        </div>#}
 {#          <div style="align-self: center;">#}
 {#            <button type="submit">Добавить в друзья</button>#}
 {#            <p style="color: #aaa; font-size: .95em; margin-top: 3px;">не в друзьях</p>#}
 {#        </div>#}
-      </div>
+{#      </div>#}
         
+        </div>
     </div>
-  </div>
 </div>
 {% endblock content %}
