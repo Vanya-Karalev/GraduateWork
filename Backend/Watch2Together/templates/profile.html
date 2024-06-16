@@ -10,13 +10,13 @@
         <div class="profile-page">
             <h1 class="profile-page__header">Profile</h1>
             <div class="profile-page__details">
-                <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="profile-page__img">
                         {% if request.user.image and request.user.image.url %}
                             <img src="{{ request.user.image.url }}" alt="image">
                         {% else %}
-                            <img src="/media/images/Manjiro_Mikey_Sano.jpeg" alt="image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
                         {% endif %}
                         <button class="form__upload" id="upload-avatar-btn" type="button">
                             Выбрать
@@ -25,11 +25,44 @@
                     </div>
                     <div class="profile-page__info">
                         <label class="form__username">Почта</label>
-                        <input class="form__input-username" value="{{ request.user.email }}" name="email"/>
+                        <input class="form__input-username" 
+                            type="email"
+                            placeholder="email"
+                            id="email"
+                            name="email"
+                            {% if email %}
+                                value="{{ email }}"
+                            {% else %}
+                                value="{{ request.user.email }}"
+                            {% endif %}
+                            required
+                        />
+                        {% if error_email %}
+                            <p style="color: #c00000; margin-left: 20px">Ошибка: {{ error_email }}</p>
+                        {% endif %}
                         <label class="form__current-password">Текущий пароль</label>
-                        <input class="form__input-current-password"/>
+                        <input class="form__input-current-password"
+                            type="password"
+                            placeholder="password"
+                            id="password"
+                            name="password1"
+                            {% if password %}
+                                value="{{ password }}"
+                            {% endif %}
+                        />
+                        {% if error_password %}
+                            <p style="color: #c00000; margin-left: 20px">Ошибка: {{ error_password }}</p>
+                        {% endif %}
                         <label class="form__new-password">Новый пароль</label>
-                        <input class="form__input-new-password"/>
+                        <input class="form__input-new-password"
+                            type="password"
+                            placeholder="new password"
+                            id="new_password"
+                            name="password2"
+                            {% if new_password %}
+                                value="{{ new_password }}"
+                            {% endif %}
+                        />
                         <button type="submit" class="form__save">
                             Сохранить
                         </button>

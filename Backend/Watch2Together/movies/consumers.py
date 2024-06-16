@@ -59,8 +59,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'disconnect_user': text_data_json['disconnect_user'],
                 }
             )
-        elif 'disconnect' in text_data_json:
-            print('стр закрыта')
         else:
             message = text_data_json
             event = {

@@ -50,7 +50,7 @@
             {% if not request.user.is_authenticated %}
                 <a href="{% url 'admin:index' %}">Админка</a>
                 <a href="{% url 'signin' %}">Авторизация</a>
-                <a href="{% url 'signup' %}">Регистрация</a>
+                <a href="{% url 'register' %}">Регистрация</a>
             {% else %}
                 <div class="dropdown" id="drop-down">
                     <span>Профиль</span>
@@ -58,7 +58,7 @@
                         <input type="checkbox">
                         <ul>
                             <a style="color: black; font-weight: 900; font-size: 20px; display: block; padding: 6px 20px; white-space: nowrap; min-width: 100px;">{{ request.user }}</a>
-                            <li val="Personal"><a href="{% url 'profile' %}" style="color: black">Настройки аккаунта</a></li>
+                            <li val="Personal"><a href="{% url 'update_profile' %}" style="color: black">Настройки аккаунта</a></li>
                             <li val="Personal"><a href="{% url 'friends' %}" style="color: black">Друзья</a></li>
                             <li val="Personal"><a href="{% url 'notifications' %}" style="color: black">Уведомления</a></li>
                             <li val="Personal"><a href="{% url 'myfavoritefilms' %}" style="color: black">Избранное</a></li>

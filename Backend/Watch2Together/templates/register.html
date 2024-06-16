@@ -9,7 +9,7 @@
     <div class="container" style="margin: 100px auto;">
         <div class="login-page">
             <h1 class="login-page__header">Регистрация</h1>
-            <form method="POST" class="login-form" action="{% url 'signup' %}">
+            <form method="POST" class="login-form" action="{% url 'register' %}">
                 {%csrf_token%}
                 <label for="username" class="form__username">Имя пользователя:</label>
                 <input class="form__input-username"
@@ -17,29 +17,53 @@
                        placeholder="username"
                        id="username"
                        name="username"
+                       {% if username %}
+                           value="{{ username }}"
+                       {% endif %}
                        required
                 />
+                {% if error_username %}
+                    <p style="color: #c00000; margin-left: 20px">Ошибка: {{ error_username }}</p>
+                {% endif %}
                 <label for="email" class="form__username">Почта:</label>
                 <input class="form__input-username"
                        type="email"
                        placeholder="email"
                        id="email"
                        name="email"
-                       required/>
+                       {% if email %}
+                           value="{{ email }}"
+                       {% endif %}
+                       required
+                />
+                {% if error_email %}
+                    <p style="color: #c00000; margin-left: 20px">Ошибка: {{ error_email }}</p>
+                {% endif %}
                 <label for="password" class="form__username">Пароль:</label>
                 <input class="form__input-username"
                        type="password"
                        placeholder="password"
                        id="password"
                        name="password1"
-                       required/>
+                       {% if password %}
+                           value="{{ password }}"
+                       {% endif %}
+                       required
+                />
+                {% if error_password %}
+                    <p style="color: #c00000; margin-left: 20px">Ошибка: {{ error_password }}</p>
+                {% endif %}
                 <label for="repeat_password" class="form__username">Повторить пароль:</label>
                 <input class="form__input-password"
                        type="password"
                        placeholder="repeat password"
                        id="repeat_password"
                        name="password2"
-                       required/>
+                       {% if confirm_password %}
+                           value="{{ confirm_password }}"
+                       {% endif %}
+                       required
+                />
                 <button type="submit" class="form__signin">
                     Регистрация
                 </button>

@@ -2,36 +2,98 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import authenticate, login, logout
-from users.forms import CustomUserCreationForm, CustomUserChangeForm
-from users.models import CustomUser, Friends
+# from users.forms import CustomUserCreationForm, CustomUserChangeForm
+from users.models import CustomUser, Friends, Notifications
 from movies.models import Film, Favorites, Room
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.hashers import check_password, make_password
+import re
 
 
-class SignUpView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('mainpage')
-    template_name = 'register.html'
+# class SignUpView(CreateView):
+#     form_class = CustomUserCreationForm
+#     success_url = reverse_lazy('mainpage')
+#     template_name = 'register.html'
+#
+#     def form_valid(self, form):
+#         response = super().form_valid(form)
+#         login(self.request, self.object)
+#         return response
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
+
+def register(request):
+    context = {}
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        context['username'] = username
+        email = request.POST.get('email')
+        context['email'] = email
+        password = request.POST.get('password1')
+        context['password'] = password
+        confirm_password = request.POST.get('password2')
+        context['confirm_password'] = confirm_password
+        if password == confirm_password:
+            if CustomUser.objects.filter(username=username).exists():
+                context['error_username'] = 'Такой пользователь уже существует'
+            elif not re.match(r'^[a-zA-Z0-9]+$', username):
+                context['error_username'] = 'Укажите верный username'
+            elif email == '' or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                context['error_email'] = 'Укажите верную почту'
+            else:
+                user = CustomUser.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                login(request, user)
+                return redirect('mainpage')
+        else:
+            context['error_password'] = 'Пароли не совпадают'
+    return render(request, 'register.html', context)
 
 
-class ProfileView(UpdateView):
-    form_class = CustomUserChangeForm
-    success_url = reverse_lazy('mainpage')
-    template_name = 'profile.html'
+def update_profile(request):
+    context = {}
+    user = request.user
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        context['email'] = email
+        password = request.POST.get('password1')
+        context['password'] = password
+        new_password = request.POST.get('password2')
+        context['new_password'] = new_password
+        image = request.FILES.get('image')
 
-    def get_object(self, queryset=None):
-        return self.request.user
+        if check_password(password, user.password) and new_password != '' and password != '':
+            user.password = make_password(new_password)
+        else:
+            context['error_password'] = 'Неверный пароль'
 
-    def form_valid(self, form):
-        user = form.save()
-        return super().form_valid(form)
+        if email and email != user.email:
+            if email == '' or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                context['error_email'] = 'Укажите верную почту'
+            else:
+                user.email = email
+
+        if image:
+            user.image = image
+
+        if not context:
+            user.save()
+            return redirect('profile')
+    return render(request, 'profile.html', context)
+
+
+# class ProfileView(UpdateView):
+#     form_class = CustomUserChangeForm
+#     success_url = reverse_lazy('mainpage')
+#     template_name = 'profile.html'
+#
+#     def get_object(self, queryset=None):
+#         return self.request.user
+#
+#     def form_valid(self, form):
+#         user = form.save()
+#         return super().form_valid(form)
 
 
 def LoginPage(request):
@@ -198,11 +260,15 @@ def invite_friend(request):
         user_id = request.POST.get('user_id')
         room_id = request.POST.get('room_id')
         receiver = get_object_or_404(CustomUser, id=user_id)
-        print(receiver.username)
         room = get_object_or_404(Room, id=room_id)
-        print(room.room_name)
 
         # Your invitation logic here
+        # notification = Notifications(
+        #     sender=request.user,
+        #     receiver=receiver,
+        #     text_notification=f"{request.user.username} отправил(а) вам приглашение в комнату."
+        # )
+        # notification.save()
 
         return JsonResponse({'status': 'success', 'message': f'{receiver.username} has been invited to {room.room_name}'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
