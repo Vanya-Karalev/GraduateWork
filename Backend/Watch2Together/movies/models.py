@@ -26,7 +26,7 @@ class Film(models.Model):
     country = models.CharField(db_column='Country')
     duration = models.PositiveIntegerField(db_column='Duration')
     slug = models.SlugField(null=False, unique=True, default="")
-    # ссылка на фильм
+    film_link = models.CharField(null=True, db_column='Film link')
 
     class Meta:
         db_table = 'Film'

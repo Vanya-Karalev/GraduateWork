@@ -68,7 +68,7 @@
                     {#                <video id='video' src="https://serpens.stream.voidboost.cc/5ca59386bb3190b2af3cd3b8ca9db4f9:2024060208:41068d76-23fe-4a2c-abc6-dd2fcd1c6c54/1/6/2/0/9/2/kp16x.mp4" poster="https://assets.codepen.io/32795/poster.png" autoplay muted></video>#}
                 {% endif %}
             </div>
-            <div style="display: flex" class="invitemyfriends">
+            <div style="display: flex">
                 {% if request.user == room.owner %}
                     <div id="openModalButton" class="button">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#5C5C5C" width="35"
@@ -76,7 +76,7 @@
                             <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"></path>
                         </svg>
                     </div>
-                    
+
                     <div id="modal" class="main">
                         <div class="content">
                             <div class="header">
@@ -101,11 +101,9 @@
                                             {% if requset.user == friend.sender %}
                                                 <a href="#"
                                                    onclick="inviteFriend({{ friend.receiver.id }}, {{ room.id }}); return false;">Пригласить</a>
-                                                {#                                            <a href="{% url 'invite_friend' friend.receiver.id room.id %}">Пригласить</a>#}
                                             {% else %}
                                                 <a href="#"
                                                    onclick="inviteFriend({{ friend.sender.id }}, {{ room.id }}); return false;">Пригласить</a>
-                                                {#                                            <a href="{% url 'invite_friend' friend.sender.id room.id %}">Пригласить</a>#}
                                             {% endif %}
                                             <p style="color: #aaa; font-size: .95em; margin-top: 3px;">друзья</p>
                                         </div>
@@ -115,16 +113,20 @@
                         </div>
                     </div>
                 {% endif %}
-                {% for room_user in room_users %}
-                    <div id="userDiv{{ room_user.user.id }}" style="margin: 10px; background-color: {% if room_user.user == room.owner %}whitesmoke{% else %}#434343{% endif %}; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                        {% if room_user.user.image and room_user.user.image.url %}
-                            <img src="{{ room_user.user.image.url }}" alt="User Image" style="height: 70px; border-radius: 10px;">
-                        {% else %}
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Default Image" style="height: 70px; border-radius: 10px;">
-                        {% endif %}
-                    </div>
-                {% endfor %}
-
+                <div style="display: flex" class="invitemyfriends">
+                    {% for room_user in room_users %}
+                        <div id="userDiv{{ room_user.user.id }}"
+                             style="margin: 10px; background-color: {% if room_user.user == room.owner %}whitesmoke{% else %}#434343{% endif %}; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                            {% if room_user.user.image and room_user.user.image.url %}
+                                <img src="{{ room_user.user.image.url }}" alt="User Image"
+                                     style="height: 70px; border-radius: 10px;">
+                            {% else %}
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Default Image"
+                                     style="height: 70px; border-radius: 10px;">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="parent">
@@ -234,26 +236,26 @@
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
-            
+
             window.addEventListener('beforeunload', function (event) {
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
             });
-            
+
             const container = document.querySelector(".container"),
-            mainVideo = container.querySelector("video"),
-            videoTimeline = container.querySelector(".video-timeline"),
-            progressBar = container.querySelector(".progress-bar"),
-            volumeBtn = container.querySelector(".volume i"),
-            volumeSlider = container.querySelector(".left input");
+                mainVideo = container.querySelector("video"),
+                videoTimeline = container.querySelector(".video-timeline"),
+                progressBar = container.querySelector(".progress-bar"),
+                volumeBtn = container.querySelector(".volume i"),
+                volumeSlider = container.querySelector(".left input");
             currentVidTime = container.querySelector(".current-time"),
-            videoDuration = container.querySelector(".video-duration"),
-            skipBackward = container.querySelector(".skip-backward i"),
-            skipForward = container.querySelector(".skip-forward i"),
-            playPauseBtn = container.querySelector(".play-pause i"),
-            speedBtn = container.querySelector(".playback-speed span"),
-            speedOptions = container.querySelector(".speed-options"),
-            pipBtn = container.querySelector(".pic-in-pic span"),
-            fullScreenBtn = container.querySelector(".fullscreen i");
+                videoDuration = container.querySelector(".video-duration"),
+                skipBackward = container.querySelector(".skip-backward i"),
+                skipForward = container.querySelector(".skip-forward i"),
+                playPauseBtn = container.querySelector(".play-pause i"),
+                speedBtn = container.querySelector(".playback-speed span"),
+                speedOptions = container.querySelector(".speed-options"),
+                pipBtn = container.querySelector(".pic-in-pic span"),
+                fullScreenBtn = container.querySelector(".fullscreen i");
             let timer;
             mainVideo.muted = false;
             const hideControls = () => {
@@ -415,7 +417,7 @@
                     const messageData = data.message;
                     const sender = messageData.sender;
                     const message = messageData.message;
-                    
+
                     // Empty the message input field after the message has been sent
                     if (sender === '{{user}}') {
                         document.getElementById('msg').value = '';
@@ -486,26 +488,26 @@
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
                 {#socket.send(JSON.stringify({'timer_state': mainVideo.currentTime, 'room_name': '{{room_name}}'}));#}
             };
-            
+
             window.addEventListener('beforeunload', function (event) {
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
             });
-            
+
             const container = document.querySelector(".container"),
-            mainVideo = container.querySelector("video"),
-            videoTimeline = container.querySelector(".video-timeline"),
-            progressBar = container.querySelector(".progress-bar"),
-            volumeBtn = container.querySelector(".volume i"),
-            volumeSlider = container.querySelector(".left input");
+                mainVideo = container.querySelector("video"),
+                videoTimeline = container.querySelector(".video-timeline"),
+                progressBar = container.querySelector(".progress-bar"),
+                volumeBtn = container.querySelector(".volume i"),
+                volumeSlider = container.querySelector(".left input");
             currentVidTime = container.querySelector(".current-time"),
-            videoDuration = container.querySelector(".video-duration"),
-            skipBackward = container.querySelector(".skip-backward i"),
-            skipForward = container.querySelector(".skip-forward i"),
-            playPauseBtn = container.querySelector(".play-pause i"),
-            speedBtn = container.querySelector(".playback-speed span"),
-            speedOptions = container.querySelector(".speed-options"),
-            pipBtn = container.querySelector(".pic-in-pic span"),
-            fullScreenBtn = container.querySelector(".fullscreen i");
+                videoDuration = container.querySelector(".video-duration"),
+                skipBackward = container.querySelector(".skip-backward i"),
+                skipForward = container.querySelector(".skip-forward i"),
+                playPauseBtn = container.querySelector(".play-pause i"),
+                speedBtn = container.querySelector(".playback-speed span"),
+                speedOptions = container.querySelector(".speed-options"),
+                pipBtn = container.querySelector(".pic-in-pic span"),
+                fullScreenBtn = container.querySelector(".fullscreen i");
             let timer;
             mainVideo.muted = false;
             const hideControls = () => {

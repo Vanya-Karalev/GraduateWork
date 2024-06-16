@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.hashers import check_password, make_password
 import re
+from django.utils import timezone
 
 
 # class SignUpView(CreateView):
@@ -147,6 +148,15 @@ def add_friend(request, user_id):
     receiver = get_object_or_404(CustomUser, id=user_id)
     friend_request = Friends(sender=request.user, receiver=receiver, status='request_sent')
     friend_request.save()
+
+    notification = Notifications(
+        sender=request.user,
+        receiver=receiver,
+        text_notification=f"{request.user.username} отправил(а) вам запрос для добавления в друзья.",
+        notification_date=timezone.now()
+    )
+    notification.save()
+
     return redirect('friends')
 
 
@@ -182,6 +192,14 @@ def accept_request(request, user_id):
     friend_request.status = 'friends'
     friend_request.save()
 
+    notification = Notifications(
+        sender=sender,
+        receiver=request.user,
+        text_notification=f"{request.user.username} принял(а) ваш запрос в друзья.",
+        notification_date=timezone.now()
+    )
+    notification.save()
+
     return redirect('friends')
 
 
@@ -198,7 +216,11 @@ def decline_request(request, user_id):
 
 
 def notifications(request):
-    return render(request, 'notification.html')
+    now = timezone.now().isoformat()
+    my_notifications = Notifications.objects.filter(receiver=request.user)
+    context = {'notifications': my_notifications,
+               'now': now}
+    return render(request, 'notification.html', context)
 
 
 def favorite(request, film_id):
@@ -245,6 +267,13 @@ def buy_subscription(request, days):
     user.subscription = True
     user.period = user.period + days
     user.save()
+    notification = Notifications(
+        sender=request.user,
+        receiver=request.user,
+        text_notification=f"Вы купили/продлили подписку.",
+        notification_date=timezone.now()
+    )
+    notification.save()
     return redirect('subscription')
 
 
@@ -252,6 +281,13 @@ def cancel_subscription(request):
     user = request.user
     user.subscription = False
     user.save()
+    notification = Notifications(
+        sender=request.user,
+        receiver=request.user,
+        text_notification=f"Вы отменили подписку.",
+        notification_date=timezone.now()
+    )
+    notification.save()
     return redirect('subscription')
 
 
@@ -262,13 +298,14 @@ def invite_friend(request):
         receiver = get_object_or_404(CustomUser, id=user_id)
         room = get_object_or_404(Room, id=room_id)
 
-        # Your invitation logic here
-        # notification = Notifications(
-        #     sender=request.user,
-        #     receiver=receiver,
-        #     text_notification=f"{request.user.username} отправил(а) вам приглашение в комнату."
-        # )
-        # notification.save()
+        notification = Notifications(
+            sender=request.user,
+            receiver=receiver,
+            text_notification=f"{request.user.username} отправил(а) вам приглашение в комнату.",
+            room_link=room.room_name,
+            notification_date=timezone.now()
+        )
+        notification.save()
 
-        return JsonResponse({'status': 'success', 'message': f'{receiver.username} has been invited to {room.room_name}'})
+        return JsonResponse({'status': 'success', 'message': f'{receiver.username} приглашен в комнату {room.room_name}'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

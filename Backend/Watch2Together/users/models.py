@@ -39,8 +39,8 @@ class Notifications(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='SenderID', related_name='notification_sender')
     receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='ReceiverID', related_name='notification_receiver')
     text_notification = models.TextField(db_column='Notification')
-    # ссылка на комнату
-    # дата
+    room_link = models.CharField(null=True, db_column='Room link')
+    notification_date = models.DateField(null=True, db_column='Notification date')
 
     class Meta:
         db_table = 'Notifications'
