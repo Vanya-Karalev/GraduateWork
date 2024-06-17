@@ -143,23 +143,6 @@
         suggestionBox.classList.remove("openSuggestions");
       }
     });
-
-    // -------- Show Images in suggestion -----------
-
-    const placeholderImages = document.querySelectorAll(".imageplaceholder");
-    const placeholderToggle = document.getElementById("showimagePlaceholder");
-
-    placeholderToggle.addEventListener("click", () => {
-      if (placeholderToggle.checked) {
-        placeholderImages.forEach((e) => {
-          e.style.display = "flex";
-        });
-      } else {
-        placeholderImages.forEach((e) => {
-          e.style.display = "none";
-        });
-      }
-    });
 </script>
 
 {% block js %}

@@ -57,10 +57,17 @@ def MessageView(request, room_name):
         'friends': my_friends,
         'room_users': get_room_users,
     }
-    return render(request, 'room.html', context)
+    if (get_room.owner.subscription or get_room.owner.period != 0 and get_room_users.count() < 10) or get_room_users.count() < 2:
+        return render(request, 'room.html', context)
+    else:
+        return render(request, 'error.html')
 
 
 def watch_film(request, slug):
     film = get_object_or_404(Film, slug=slug)
     context = {'film': film}
     return render(request, 'watch.html', context)
+
+
+def room_error(request):
+    return render(request, 'error.html')

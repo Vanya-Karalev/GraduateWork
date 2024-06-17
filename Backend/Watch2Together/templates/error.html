@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/error.css' %}"/>
+    <script src="{% static 'css/error.js' %}"></script>
+{% endblock styles %}
+
+{% block content %}
+    <div class="box">
+        <div class="box__ghost">
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+            <div class="symbol"></div>
+
+            <div class="box__ghost-container">
+                <div class="box__ghost-eyes">
+                    <div class="box__eye-left"></div>
+                    <div class="box__eye-right"></div>
+                </div>
+                <div class="box__ghost-bottom">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="box__ghost-shadow"></div>
+        </div>
+
+        <div class="box__description">
+            <div class="box__description-container">
+                <div class="box__description-title">Whoops!</div>
+                <div class="box__description-text">
+                    Похоже что у создателя комнаты не приобретена подписка, либо кол-во участников больше 2.
+                </div>
+            </div>
+
+            <a href="{% url 'mainpage' %}" class="box__button">
+                На главную
+            </a>
+        </div>
+    </div>
+{% endblock %}

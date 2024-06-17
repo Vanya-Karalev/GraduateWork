@@ -116,7 +116,7 @@
                 <div style="display: flex" class="invitemyfriends">
                     {% for room_user in room_users %}
                         <div id="userDiv{{ room_user.user.id }}"
-                             style="margin: 10px; background-color: {% if room_user.user == room.owner %}whitesmoke{% else %}#434343{% endif %}; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                             style="margin: 10px; background-color: #434343; height: 90px; width: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
                             {% if room_user.user.image and room_user.user.image.url %}
                                 <img src="{{ room_user.user.image.url }}" alt="User Image"
                                      style="height: 70px; border-radius: 10px;">
@@ -241,6 +241,10 @@
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
             });
 
+            window.addEventListener('unload', function (event) {
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
+            });
+            
             const container = document.querySelector(".container"),
                 mainVideo = container.querySelector("video"),
                 videoTimeline = container.querySelector(".video-timeline"),
@@ -493,6 +497,10 @@
                 socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
             });
 
+            window.addEventListener('unload', function (event) {
+                socket.send(JSON.stringify({'disconnect_user': '{{user}}', 'room_name': '{{room_name}}'}));
+            });
+            
             const container = document.querySelector(".container"),
                 mainVideo = container.querySelector("video"),
                 videoTimeline = container.querySelector(".video-timeline"),

@@ -28,11 +28,14 @@
                         </div>
                         <div class="box-text">
                             <p class="notifi">
-                                <a>{{ notification.text_notification }} Нажмите чтобы присоединиться к комнате: </a>
-                                <a href="{% url 'room' notification.room_link %}" class="name">w2g/{{ notification.room_link }}</a>
+                                <a>{{ notification.text_notification }}</a>
+                                {% if notification.room_link %}
+                                    <a>Нажмите чтобы присоединиться к комнате: </a>
+                                    <a href="{% url 'room' notification.room_link %}" class="name">w2g/{{ notification.room_link }}</a>
+                                {% endif %}
     {#                            <span class="dot"></span>#}
                             </p>
-                            <p class="time">{{ notification.notification_date }} at {{ notification.notification_date|timesince }}</p>
+                            <p class="time">{{ notification.notification_date }}</p>
                         </div>
                     </div>
                 {% endfor %}
