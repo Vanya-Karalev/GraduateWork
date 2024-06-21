@@ -18,13 +18,28 @@
 {#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
-                      <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="">
+                        {% if request.user == friend.sender %}
+                            {% if friend.receiver.image and friend.receiver.image.url %}
+                                <img src="{{ friend.receiver.image.url }}" alt="image">
+                            {% else %}
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
+                            {% endif %}
+                        {% else %}
+                            {% if friend.sender.image and friend.sender.image.url %}
+                                <img src="{{ friend.sender.image.url }}" alt="image">
+                            {% else %}
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
+                            {% endif %}
+                        {% endif %}
+{#                      <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="">#}
                     </div>
                     <div class="text-content">
-                      <h3>Fresh Milk</h3>
-                        {% if requset.user == friend.sender %}
+{#                      <h3>Fresh Milk</h3>#}
+                        {% if request.user == friend.sender %}
+                            <h3>{{ friend.receiver.email }}</h3>
                             <p>{{ friend.receiver }}</p>
                         {% else %}
+                            <h3>{{ friend.sender.email }}</h3>
                             <p>{{ friend.sender }}</p>
                         {% endif %}
                     </div>
@@ -42,10 +57,16 @@
 {#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
-                      <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
+                        {% if for_me_request.sender.image and for_me_request.sender.image.url %}
+                            <img src="{{ for_me_request.sender.image.url }}" alt="image">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
+                        {% endif %}
+{#                      <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">#}
                     </div>
                     <div class="text-content">
-                      <h3>Fresh Milk</h3>
+{#                      <h3>Fresh Milk</h3>#}
+                      <h3>{{ for_me_request.sender.email }}</h3>
                       <p>{{ for_me_request.sender.username }}</p>
                     </div>
                     <div style="align-self: center;">
@@ -62,10 +83,16 @@
 {#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
-                      <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">
+                        {% if my_request.receiver.image and my_request.receiver.image.url %}
+                            <img src="{{ my_request.receiver.image.url }}" alt="image">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
+                        {% endif %}
+{#                      <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="">#}
                     </div>
                     <div class="text-content">
-                      <h3>Fresh Milk</h3>
+{#                      <h3>Fresh Milk</h3>#}
+                      <h3>{{ my_request.receiver.email }}</h3>
                       <p>{{ my_request.receiver.username }}</p>
                     </div>
                     <div style="align-self: center;">
@@ -82,10 +109,16 @@
 {#                {% csrf_token %}#}
                 <div class="item-container">
                     <div class="img">
-                      <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">
+                        {% if user.image and user.image.url %}
+                            <img src="{{ user.image.url }}" alt="image">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
+                        {% endif %}
+{#                      <img src="https://randomuser.me/api/portraits/women/50.jpg" alt="">#}
                     </div>
                     <div class="text-content">
-                      <h3>Fresh Milk</h3>
+{#                      <h3>Fresh Milk</h3>#}
+                      <h3>{{ user.email }}</h3>
                       <p>{{ user.username }}</p>
                     </div>
                     <div style="align-self: center;">

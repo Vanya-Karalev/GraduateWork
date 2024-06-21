@@ -64,19 +64,23 @@ def update_profile(request):
         context['new_password'] = new_password
         image = request.FILES.get('image')
 
-        if check_password(password, user.password) and new_password != '' and password != '':
-            user.password = make_password(new_password)
-        else:
-            context['error_password'] = 'Неверный пароль'
+        if image:
+            user.image = image
+            user.save()
+
+        if new_password and password:
+            if check_password(password, user.password) and new_password != '':
+                user.password = make_password(new_password)
+                user.save()
+            else:
+                context['error_password'] = 'Неверный пароль'
 
         if email and email != user.email:
             if email == '' or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                 context['error_email'] = 'Укажите верную почту'
             else:
                 user.email = email
-
-        if image:
-            user.image = image
+                user.save()
 
         if not context:
             user.save()

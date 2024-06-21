@@ -91,14 +91,14 @@
                                         </div>
                                         <div class="text-content">
                                             <h3>Fresh Milk</h3>
-                                            {% if requset.user == friend.sender %}
+                                            {% if request.user == friend.sender %}
                                                 <p>{{ friend.receiver }}</p>
                                             {% else %}
                                                 <p>{{ friend.sender }}</p>
                                             {% endif %}
                                         </div>
                                         <div style="align-self: center;">
-                                            {% if requset.user == friend.sender %}
+                                            {% if request.user == friend.sender %}
                                                 <a href="#"
                                                    onclick="inviteFriend({{ friend.receiver.id }}, {{ room.id }}); return false;">Пригласить</a>
                                             {% else %}

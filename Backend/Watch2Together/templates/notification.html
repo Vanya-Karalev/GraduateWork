@@ -20,8 +20,8 @@
                 {% for notification in notifications %}
                     <div class="single-box unseen">
                         <div class="avatar">
-                            {% if request.user.image and request.user.image.url %}
-                                <img src="{{ request.user.image.url }}" alt="image">
+                            {% if sender.image and sender.image.url %}
+                                <img src="{{ sender.image.url }}" alt="image">
                             {% else %}
                                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="image">
                             {% endif %}
